@@ -70,13 +70,13 @@ public class Service extends Thread {
                 } else if (content.equals("wait")) {
                     {
                         if (this.name == "p1") {
-                            if (MyServer.isOVER[1] == 1) {
+                            if (MyServer.isOVER[1] == 1 && MyServer.isOVER[0] == 1) {
                                 sendMessage(this.socket, "over");
                             } else {
                                 sendMessage(this.socket, "wait");
                             }
                         } else {
-                            if (MyServer.isOVER[0] == 1) {
+                            if (MyServer.isOVER[0] == 1 && MyServer.isOVER[1] == 1) {
                                 sendMessage(this.socket, "over");
                             } else {
                                 sendMessage(this.socket, "wait");
