@@ -9,7 +9,7 @@ public class ClientTest2 {
     static int port = 9999;
 
     public static void main(String[] args) throws UnknownHostException, IOException {
-        PlayerClient pc = new PlayerClient(9999);
+        PlayerClient pc = new PlayerClient(acc, port);
         int score = 0;
         int oppscore = 0;
         while (true && !pc.isBusy) {
@@ -49,6 +49,7 @@ public class ClientTest2 {
                 pc.gameOver(score);
                 pc.waitOppGameOver();
                 oppscore = pc.oopDataFinal();
+                pc.sendExit();
                 System.out.println("最终得分:" + score + "对手得分:" + oppscore);
             } catch (Exception e) {
 

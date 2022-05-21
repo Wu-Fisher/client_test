@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.lang.model.util.ElementScanner14;
@@ -34,8 +35,9 @@ public class Service extends Thread {
                     // PrintWriter writer = new PrintWriter(socket.getOutputStream());
                     // writer.println(socket.getPort() + content);
                     // writer.flush();
-                    MyServer.socketlist.remove(socket);
+                    MyServer.socketlist.clear();
                     MyServer.map.clear();
+                    Arrays.fill(MyServer.isOVER, 0);
                     socket.shutdownInput();
                     socket.shutdownOutput();
                     socket.close();
