@@ -200,8 +200,70 @@ public class PlayerClient {
 
     }
 
-    public void overGame() {
-        isPlaying = false;
+    public void sendOver() {
+        try {
+            PrintWriter pw = new PrintWriter(this.socket.getOutputStream());
+            String content = "over";
+            pw.println(content);
+            pw.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void gameOver(int score) {
+        setYourScore(score);
+        sendYourScore();
+        sendOver();
+    }
+
+    public void waitOppGameOver() {
+        while (true) {
+            try {
+                PrintWriter pw = new PrintWriter(this.socket.getOutputStream());
+                String content = "wait";
+                pw.println(content);
+                pw.flush();
+                Thread.sleep(10);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                String content = br.readLine();
+                if (content.equals("over")) {
+
+                    break;
+                }
+                System.out.println("wait opp");
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public int oopDataFinal() {
+        try {
+            PrintWriter pw = new PrintWriter(socket.getOutputStream());
+            String content = "otherscore";
+            pw.println(content);
+            pw.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String content = br.readLine();
+            opscore = content;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        sendExit();
+        return getOppScore();
 
     }
 

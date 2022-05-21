@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class ClientTest {
+public class ClientTest2 {
     static String acc = "10.249.9.101";
     static int port = 9999;
 
@@ -30,9 +30,9 @@ public class ClientTest {
             System.out.println("busy");
         } else {
             System.out.println("开始游戏");
-            for (int i = 0; i < 30; i++) {
+            for (int i = 0; i < 40; i++) {
                 try {
-                    score += 100;
+                    score += 120;
                     pc.setYourScore(score);
                     pc.sendYourScore();
                     Thread.sleep(100);
