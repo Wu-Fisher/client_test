@@ -15,6 +15,7 @@ public class PlayerClient {
     public boolean isPlaying = false;
     public boolean isReady = false;
     public boolean isBusy = false;
+    public boolean isWaiting = false;
 
     public Socket socket;
     public String acc = "10.249.9.101";
@@ -92,142 +93,133 @@ public class PlayerClient {
     }
 
     public void sendYourScore() {
-        if (isPlaying) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    // TODO Auto-generated method stub
-                    try {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                try {
+                    PrintWriter pw = new PrintWriter(socket.getOutputStream());
+                    String content = score;
+                    pw.println(content);
+                    pw.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    public void KeepsendYourScore() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                try {
+
+                    while (isPlaying) {
+                        Thread.sleep(500);
                         PrintWriter pw = new PrintWriter(socket.getOutputStream());
                         String content = score;
                         pw.println(content);
                         pw.flush();
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }).start();
-        }
-    }
-
-    public void KeepsendYourScore() {
-        if (isPlaying) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    // TODO Auto-generated method stub
-                    try {
-
-                        while (isPlaying) {
-                            Thread.sleep(500);
-                            PrintWriter pw = new PrintWriter(socket.getOutputStream());
-                            String content = score;
-                            pw.println(content);
-                            pw.flush();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     public void updateOppScore() {
-        if (isPlaying) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    // TODO Auto-generated method stub
-                    try {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                try {
+                    PrintWriter pw = new PrintWriter(socket.getOutputStream());
+                    String content = "otherscore";
+                    pw.println(content);
+                    pw.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                try {
+                    BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    String content = br.readLine();
+                    opscore = content;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+    }
+
+    public void KeepupdateOppScore() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                try {
+                    while (isPlaying) {
+                        Thread.sleep(1000);
                         PrintWriter pw = new PrintWriter(socket.getOutputStream());
                         String content = "otherscore";
                         pw.println(content);
                         pw.flush();
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }).start();
-            new Thread(new Runnable() {
+            }
+        }).start();
+        new Thread(new Runnable() {
 
-                @Override
-                public void run() {
-                    // TODO Auto-generated method stub
-                    try {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                try {
+                    while (isPlaying) {
+                        Thread.sleep(1000);
                         BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                         String content = br.readLine();
                         opscore = content;
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }).start();
+            }
+        }).start();
 
-        }
-    }
-
-    public void KeepupdateOppScore() {
-        if (isPlaying) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    // TODO Auto-generated method stub
-                    try {
-                        while (isPlaying) {
-                            Thread.sleep(1000);
-                            PrintWriter pw = new PrintWriter(socket.getOutputStream());
-                            String content = "otherscore";
-                            pw.println(content);
-                            pw.flush();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-            new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-                    // TODO Auto-generated method stub
-                    try {
-                        while (isPlaying) {
-                            Thread.sleep(1000);
-                            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                            String content = br.readLine();
-                            opscore = content;
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-
-        }
     }
 
     public void overGame() {
         isPlaying = false;
+
     }
 
     public void sendExit() {
-        if (isPlaying) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    // TODO Auto-generated method stub
-                    try {
-                        Thread.sleep(1000);
-                        PrintWriter pw = new PrintWriter(socket.getOutputStream());
-                        String content = "exit";
-                        pw.println(content);
-                        pw.flush();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                try {
+                    Thread.sleep(1000);
+                    PrintWriter pw = new PrintWriter(socket.getOutputStream());
+                    String content = "exit";
+                    pw.println(content);
+                    pw.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 }

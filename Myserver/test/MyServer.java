@@ -14,6 +14,7 @@ public class MyServer {
     public static List<Socket> socketlist = new ArrayList<Socket>();
 
     public static HashMap<String, String> map = new HashMap<String, String>();
+    public static int[] isOVER = new int[2];
     public int port = 9999;
 
     public MyServer(int port) {

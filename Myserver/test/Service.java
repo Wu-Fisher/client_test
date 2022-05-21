@@ -61,6 +61,28 @@ public class Service extends Thread {
                     } else {
                         sendMessage(this.socket, MyServer.map.getOrDefault("p1", "0"));
                     }
+                } else if (content.equals("over")) {
+                    if (this.name == "p1") {
+                        MyServer.isOVER[0] = 1;
+                    } else {
+                        MyServer.isOVER[1] = 1;
+                    }
+                } else if (content.equals("wait")) {
+                    {
+                        if (this.name == "p1") {
+                            if (MyServer.isOVER[1] == 1) {
+                                sendMessage(this.socket, "over");
+                            } else {
+                                sendMessage(this.socket, "wait");
+                            }
+                        } else {
+                            if (MyServer.isOVER[0] == 1) {
+                                sendMessage(this.socket, "over");
+                            } else {
+                                sendMessage(this.socket, "wait");
+                            }
+                        }
+                    }
                 } else {
                     if (this.name == "p1") {
                         MyServer.map.put("p1", content);
