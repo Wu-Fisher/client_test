@@ -35,7 +35,6 @@ public class ClientTest {
                     score += 100;
                     pc.setYourScore(score);
                     pc.sendYourScore();
-                    Thread.sleep(100);
                     pc.updateOppScore();
                     oppscore = pc.getOppScore();
                     System.out.println("your score: " + score + " opp score: " + oppscore);

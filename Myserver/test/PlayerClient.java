@@ -35,6 +35,8 @@ public class PlayerClient {
     public PlayerClient(String acc, int port) throws UnknownHostException, IOException {
         this.acc = acc;
         this.socket = new Socket(acc, port);
+        ReadThreadExecutor = Executors.newSingleThreadExecutor();
+        WriteThreadExecutor = Executors.newSingleThreadExecutor();
     }
 
     // 及时更新调用
@@ -44,7 +46,13 @@ public class PlayerClient {
     }
 
     public int getOppScore() {
-        return Integer.parseInt(this.opscore);
+        int ans = 0;
+        try {
+            ans = Integer.parseInt(this.opscore);
+        } catch (Exception e) {
+            ans = 0;
+        }
+        return ans;
     }
 
     // 阻塞三秒查看是否ready
@@ -285,7 +293,7 @@ public class PlayerClient {
                 String content = "wait";
                 pw.println(content);
                 pw.flush();
-                Thread.sleep(10);
+                Thread.sleep(500);
             } catch (Exception e) {
                 e.printStackTrace();
             }
