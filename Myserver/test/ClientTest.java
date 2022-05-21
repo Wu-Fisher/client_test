@@ -46,8 +46,12 @@ public class ClientTest {
             }
 
             try {
-                oppscore = pc.getOppScore();
+                pc.setYourScore(score);
+                pc.sendYourScore();
                 Thread.sleep(100);
+                pc.updateOppScore();
+                Thread.sleep(1000);
+                oppscore = pc.getOppScore();
                 pc.overGame();
                 Thread.sleep(1000);
                 pc.sendExit();
