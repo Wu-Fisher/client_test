@@ -78,15 +78,18 @@ public class PlayerClient {
         WriteThreadExecutor.submit(new Runnable() {
             @Override
             public void run() {
+
+                sendContent("requestpk", socket);
+
                 // TODO Auto-generated method stub
-                try {
-                    PrintWriter pw = new PrintWriter(socket.getOutputStream());
-                    String content = "requestpk";
-                    pw.println(content);
-                    pw.flush();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                // try {
+                // PrintWriter pw = new PrintWriter(socket.getOutputStream());
+                // String content = "requestpk";
+                // pw.println(content);
+                // pw.flush();
+                // } catch (Exception e) {
+                // e.printStackTrace();
+                // }
             }
         });
 
@@ -123,14 +126,15 @@ public class PlayerClient {
             @Override
             public void run() {
                 // TODO Auto-generated method stub
-                try {
-                    PrintWriter pw = new PrintWriter(socket.getOutputStream());
-                    String content = score;
-                    pw.println(content);
-                    pw.flush();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                // try {
+                // PrintWriter pw = new PrintWriter(socket.getOutputStream());
+                // String content = score;
+                // pw.println(content);
+                // pw.flush();
+                // } catch (Exception e) {
+                // e.printStackTrace();
+                // }
+                sendContent(score, socket);
             }
         });
     }
@@ -141,14 +145,15 @@ public class PlayerClient {
             @Override
             public void run() {
                 // TODO Auto-generated method stub
-                try {
-                    PrintWriter pw = new PrintWriter(socket.getOutputStream());
-                    String content = "otherscore";
-                    pw.println(content);
-                    pw.flush();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                // try {
+                // PrintWriter pw = new PrintWriter(socket.getOutputStream());
+                // String content = "otherscore";
+                // pw.println(content);
+                // pw.flush();
+                // } catch (Exception e) {
+                // e.printStackTrace();
+                // }
+                sendContent("otherscore", socket);
             }
         });
 
@@ -156,13 +161,15 @@ public class PlayerClient {
             @Override
             public void run() {
                 // TODO Auto-generated method stub
-                try {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    String content = br.readLine();
-                    opscore = content;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                // try {
+                // BufferedReader br = new BufferedReader(new
+                // InputStreamReader(socket.getInputStream()));
+                // String content = br.readLine();
+                // opscore = content;
+                // } catch (Exception e) {
+                // e.printStackTrace();
+                // }
+                opscore = getContent(socket);
             }
         });
 
@@ -170,36 +177,36 @@ public class PlayerClient {
 
     public void sendOver() {
 
-        try {
-            PrintWriter pw = new PrintWriter(socket.getOutputStream());
-            String content = "over";
-            pw.println(content);
-            pw.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // try {
+        // PrintWriter pw = new PrintWriter(socket.getOutputStream());
+        // String content = "over";
+        // pw.println(content);
+        // pw.flush();
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // }
+        sendContent("over", socket);
     }
 
     public void gameOver(int score) {
         setYourScore(score);
-        try {
-            PrintWriter pw = new PrintWriter(socket.getOutputStream());
-            String content = this.score;
-            pw.println(content);
-            pw.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        sendContent(this.score, socket);
+        // try {
+        // PrintWriter pw = new PrintWriter(socket.getOutputStream());
+        // String content = this.score;
+        // pw.println(content);
+        // pw.flush();
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // }
         sendOver();
     }
 
     public void waitOppGameOver() {
         while (true) {
             try {
-                PrintWriter pw = new PrintWriter(socket.getOutputStream());
                 String content = "wait";
-                pw.println(content);
-                pw.flush();
+                sendContent(content, this.socket);
                 Thread.sleep(500);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -221,23 +228,28 @@ public class PlayerClient {
     }
 
     public int oopDataFinal() {
-        try {
-            PrintWriter pw = new PrintWriter(socket.getOutputStream());
-            String content = "otherscore";
-            pw.println(content);
-            pw.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            String content = br.readLine();
-            opscore = content;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        sendContent("otherscore", socket);
+        String content = getContent(socket);
+        opscore = content;
         return getOppScore();
+        // try {
+        // PrintWriter pw = new PrintWriter(socket.getOutputStream());
+        // String content = "otherscore";
+        // pw.println(content);
+        // pw.flush();
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // }
+
+        // try {
+        // BufferedReader br = new BufferedReader(new
+        // InputStreamReader(socket.getInputStream()));
+        // String content = br.readLine();
+        // opscore = content;
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // }
+        // return getOppScore();
 
     }
 
@@ -248,10 +260,8 @@ public class PlayerClient {
                 // TODO Auto-generated method stub
                 try {
                     Thread.sleep(1000);
-                    PrintWriter pw = new PrintWriter(socket.getOutputStream());
                     String content = "exit";
-                    pw.println(content);
-                    pw.flush();
+                    sendContent(content, socket);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -259,5 +269,27 @@ public class PlayerClient {
         }).start();
         ReadThreadExecutor.shutdown();
         WriteThreadExecutor.shutdown();
+    }
+
+    public void sendContent(String content, Socket socket) {
+        try (PrintWriter pw = new PrintWriter(socket.getOutputStream())) {
+            pw.println(content);
+            pw.flush();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public String getContent(Socket socket) {
+        String content = "";
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            content = br.readLine();
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+        return content;
     }
 }
