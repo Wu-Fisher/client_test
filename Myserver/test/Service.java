@@ -33,8 +33,8 @@ public class Service extends Thread {
                     // PrintWriter writer = new PrintWriter(socket.getOutputStream());
                     // writer.println(socket.getPort() + content);
                     // writer.flush();
-                    MyServer.socketlist.clear();
-                    MyServer.map.clear();
+                    MyServer.socketlist.remove(socket);
+                    MyServer.map.remove(name);
                     Arrays.fill(MyServer.isOVER, 0);
                     socket.shutdownInput();
                     socket.shutdownOutput();

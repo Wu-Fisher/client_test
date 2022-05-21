@@ -170,59 +170,54 @@ public class PlayerClient {
 
     public void sendOver() {
 
-        WriteThreadExecutor.submit(new Runnable() {
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                try {
-                    PrintWriter pw = new PrintWriter(socket.getOutputStream());
-                    String content = "over";
-                    pw.println(content);
-                    pw.flush();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        try {
+            PrintWriter pw = new PrintWriter(socket.getOutputStream());
+            String content = "over";
+            pw.println(content);
+            pw.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void gameOver(int score) {
         setYourScore(score);
-        sendYourScore();
+        try {
+            PrintWriter pw = new PrintWriter(socket.getOutputStream());
+            String content = this.score;
+            pw.println(content);
+            pw.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         sendOver();
     }
 
     public void waitOppGameOver() {
-        WriteThreadExecutor.submit(new Runnable() {
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                while (true) {
-                    try {
-                        PrintWriter pw = new PrintWriter(socket.getOutputStream());
-                        String content = "wait";
-                        pw.println(content);
-                        pw.flush();
-                        Thread.sleep(500);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                        String content = br.readLine();
-                        if (content.equals("over")) {
-                            isAllOver = true;
-                            break;
-                        }
-                        System.out.println("wait opp");
-                        Thread.sleep(1000);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+        while (true) {
+            try {
+                PrintWriter pw = new PrintWriter(socket.getOutputStream());
+                String content = "wait";
+                pw.println(content);
+                pw.flush();
+                Thread.sleep(500);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
+
+            try {
+                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                String content = br.readLine();
+                if (content.equals("over")) {
+                    isAllOver = true;
+                    break;
+                }
+                System.out.println("wait opp");
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public int oopDataFinal() {
