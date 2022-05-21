@@ -272,7 +272,8 @@ public class PlayerClient {
     }
 
     public void sendContent(String content, Socket socket) {
-        try (PrintWriter pw = new PrintWriter(socket.getOutputStream())) {
+        try {
+            PrintWriter pw = new PrintWriter(socket.getOutputStream());
             pw.println(content);
             pw.flush();
         } catch (IOException e) {
