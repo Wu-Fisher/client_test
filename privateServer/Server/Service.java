@@ -18,7 +18,9 @@ public class Service extends Thread {
     String content;
     BufferedReader reader;
     List<String> lines;
-    String path = "Server/pyout.txt";
+    String write_txt_path = "Server/pyout.txt";
+    String read_path= "Server/pyin.txt";
+    String python_exec = "python Server/test.py";
 
     public Service(Socket socket) {
         this.socket = socket;
@@ -36,7 +38,7 @@ public class Service extends Thread {
                 System.out.println(content);
                 if (content.equals("run")) {
                     runPython();
-                    writeToFile(this.path);
+                    writeToFile(this.write_txt_path);
                     sendMessage(socket, "over");
                 } else if (content.equals("exit")) {
                     System.out.println("用户" + socket.getPort() + "下线啦！");
@@ -45,7 +47,7 @@ public class Service extends Thread {
                     socket.close();
                     break;
                 } else if (content.equals("get")) {
-                    sendFile(this.path);
+                    sendFile(this.read_path);
                 }
             }
         } catch (IOException e) {
@@ -82,7 +84,7 @@ public class Service extends Thread {
         System.out.println("java test");
         Process proc;
         try {
-            proc = Runtime.getRuntime().exec("python3 test.py");
+            proc = Runtime.getRuntime().exec("python Server/test.py");
             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             String line = null;
             lines = new ArrayList<String>();

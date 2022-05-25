@@ -15,6 +15,7 @@ public class PriClient {
     Socket socket;
     String acc;
     int port;
+    String recieve_path;
 
     public PriClient(String acc, int port) throws UnknownHostException, IOException {
         this.acc = acc;
@@ -80,7 +81,8 @@ public class PriClient {
             // 文件名和长度
             String fileName = dis.readUTF();
             long fileLength = dis.readLong();
-            File directory = new File("recieve");
+            File directory = new File(recieve_path
+            );
             if (!directory.exists()) {
                 directory.mkdir();
             }
