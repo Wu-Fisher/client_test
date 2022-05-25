@@ -15,7 +15,7 @@ public class PriClient {
     Socket socket;
     String acc;
     int port;
-    String recieve_path;
+    String recieve_path = "receive";
 
     public PriClient(String acc, int port) throws UnknownHostException, IOException {
         this.acc = acc;
