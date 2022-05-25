@@ -22,7 +22,7 @@ public class MyServer {
             System.out.println("Server IP address: " + address.getHostAddress());
 
             ServerSocket serverSocket = new ServerSocket(port);
-            System.out.println("对战房已开启！");
+            System.out.println("已开启！");
             while (true) {
                 System.out.println("Waiting for client...");
                 Socket socket = serverSocket.accept();
