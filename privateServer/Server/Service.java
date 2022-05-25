@@ -140,7 +140,7 @@ public class Service extends Thread {
     public void writeToFile(String path,boolean isHead) throws IOException {
         FileWriter fw = new FileWriter(path,isHead);
         BufferedWriter bw = new BufferedWriter(fw);
-        for (String line : lines) {
+        for (String line : inlines) {
             bw.write(line);
             bw.newLine();
         }
