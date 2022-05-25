@@ -47,6 +47,29 @@ public class PriClient {
 
     }
 
+    // public void sendMessageSperate(String str)
+    // {
+    //     try {
+    //         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+    //         out.println("SPstart");
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
+    //     try {
+    //         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+    //         out.println(str);
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
+    //     try {
+    //         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+    //         out.println("SPend");
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
+
+    // }
+
     public void sendRun() {
         try {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
