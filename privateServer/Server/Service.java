@@ -18,7 +18,7 @@ public class Service extends Thread {
     String content;
     BufferedReader reader;
     List<String> lines;
-    String path = "pyout.txt";
+    String path = "Server/pyout.txt";
 
     public Service(Socket socket) {
         this.socket = socket;
