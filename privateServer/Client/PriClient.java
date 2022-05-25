@@ -23,6 +23,30 @@ public class PriClient {
         this.socket = new Socket(acc, port);
     }
 
+
+    public void sendMessage(String str)
+    {
+        try {
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            out.println("Mstart");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            out.println(str);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            out.println("Mend");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void sendRun() {
         try {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);

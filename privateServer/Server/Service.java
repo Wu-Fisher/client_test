@@ -16,9 +16,11 @@ import java.util.List;
 public class Service extends Thread {
     Socket socket;
     String content;
+    String content2;
     BufferedReader reader;
     List<String> lines;
-    String write_txt_path = "Server/pyout.txt";
+    String out_txt_path = "Server/pyout.txt";
+    String in_txt_path = "Server/pyin.txt";
     String read_path= "Server/pyin.txt";
     String python_exec = "python Server/test.py";
 
@@ -38,7 +40,8 @@ public class Service extends Thread {
                 System.out.println(content);
                 if (content.equals("run")) {
                     runPython();
-                    writeToFile(this.write_txt_path);
+                    writeToFile(this.out_txt_path);
+                   
                     sendMessage(socket, "over");
                 } else if (content.equals("exit")) {
                     System.out.println("用户" + socket.getPort() + "下线啦！");
@@ -48,6 +51,18 @@ public class Service extends Thread {
                     break;
                 } else if (content.equals("get")) {
                     sendFile(this.read_path);
+                } else if(content.equals("Mstart")){
+                    System.out.println("Mstart");
+                    lines = new ArrayList<String>();
+                    while((content2 = reader.readLine())!=null){
+                        if(content2.equals("Mend")){
+                            System.out.println("Mend");
+                            writeToFile(this.in_txt_path);
+                            break;
+                        }
+                        System.out.println(content2);
+                        lines.add(content2);
+                    }
                 }
             }
         } catch (IOException e) {
