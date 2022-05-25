@@ -1,2 +1,5 @@
-hello 
- world
+Type,Datatable
+Manufacturer,Rating,Speed
+Bosch,10,2500
+Siemens,10,3500
+Plessey,15,2500

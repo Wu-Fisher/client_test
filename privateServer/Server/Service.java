@@ -19,10 +19,9 @@ public class Service extends Thread {
     String content2;
     BufferedReader reader;
     List<String> lines;
-    List<String> inlines;
-    String out_txt_path = "Server/ttt.csv";
+    String out_txt_path = "Server/pyout.txt";
     String in_txt_path = "Server/pyin.txt";
-    String read_path= "Server/pyin.txt";
+    String send_file_path= "Server/ttt.csv";
     String python_exec = "python Server/test.py";
 
     public Service(Socket socket) {
@@ -50,7 +49,7 @@ public class Service extends Thread {
                     socket.close();
                     break;
                 } else if (content.equals("get")) {
-                    sendFile(this.read_path);
+                    sendFile(this.send_file_path);
                 } else if(content.equals("Mstart")){
                     MgetMessage();
                 }
@@ -65,7 +64,7 @@ public class Service extends Thread {
     public void MgetMessage() throws IOException
     {
         System.out.println("Mstart");
-        inlines = new ArrayList<String>();
+        lines = new ArrayList<String>();
         while((content2 = reader.readLine())!=null){
             if(content2.equals("Mend")){
                 System.out.println("Mend");
@@ -73,7 +72,7 @@ public class Service extends Thread {
                 break;
             }
             System.out.println(content2);
-            inlines.add(content2);
+            lines.add(content2);
         }
     }
     // public void SPgetMessage() throws IOException
@@ -140,7 +139,7 @@ public class Service extends Thread {
     public void writeToFile(String path,boolean isHead) throws IOException {
         FileWriter fw = new FileWriter(path,isHead);
         BufferedWriter bw = new BufferedWriter(fw);
-        for (String line : inlines) {
+        for (String line : lines) {
             bw.write(line);
             bw.newLine();
         }
