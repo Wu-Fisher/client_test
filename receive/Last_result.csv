@@ -1,0 +1,19 @@
+Privacy information,Collecting action,Collector,Condition
+Web site,['use'],First party,
+demographic information,['use'],First party,
+name,['use'],First party,
+email,['use'],First party,
+address,['use'],First party,
+financial information,['used'],First party,"to fill customer 's orders . If we have trouble processing an order , the information is used to contact the user . "
+name,['used'],First party,"to fill customer 's orders . If we have trouble processing an order , the information is used to contact the user . "
+email,['used'],First party,"to fill customer 's orders . If we have trouble processing an order , the information is used to contact the user . "
+address,['used'],First party,"to fill customer 's orders . If we have trouble processing an order , the information is used to contact the user . "
+clear gifs,['use'],First party,
+them,['ask'],First party,
+precaution,['takes'],First party(default),
+contact address,"['collect', 'retain', 'save']",Third party,if the UPLOAD is clicked . 
+user id,"['collect', 'retain', 'save']",Third party,if the UPLOAD is clicked . 
+name,"['collect', 'retain', 'save']",Third party,if the UPLOAD is clicked . 
+name,['collect'],First party,
+address,['collect'],First party,
+gender,['collect'],First party,
