@@ -5,7 +5,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class ClientTest {
-    static String acc = "10.249.9.101";
+    static String acc = "10.249.8.149";
     static int port = 9999;
 
     public static void main(String[] args) throws UnknownHostException, IOException {
