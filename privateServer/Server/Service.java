@@ -21,7 +21,7 @@ public class Service extends Thread {
     List<String> lines;
     String out_txt_path = "Server/pyout.txt";
     String in_txt_path = "Server/pyin.txt";
-    String send_file_path= "Server/ttt.csv";
+    String send_file_path = "Server/ttt.csv";
     String python_exec = "python Server/test.py";
 
     public Service(Socket socket) {
@@ -40,7 +40,7 @@ public class Service extends Thread {
                 System.out.println(content);
                 if (content.equals("run")) {
                     runPython();
-                    writeToFile(this.out_txt_path,false);
+                    writeToFile(this.out_txt_path, false);
                     sendMessage(socket, "over");
                 } else if (content.equals("exit")) {
                     System.out.println("用户" + socket.getPort() + "下线啦！");
@@ -50,7 +50,7 @@ public class Service extends Thread {
                     break;
                 } else if (content.equals("get")) {
                     sendFile(this.send_file_path);
-                } else if(content.equals("Mstart")){
+                } else if (content.equals("Mstart")) {
                     MgetMessage();
                 }
             }
@@ -61,14 +61,13 @@ public class Service extends Thread {
 
     }
 
-    public void MgetMessage() throws IOException
-    {
+    public void MgetMessage() throws IOException {
         System.out.println("Mstart");
         lines = new ArrayList<String>();
-        while((content2 = reader.readLine())!=null){
-            if(content2.equals("Mend")){
+        while ((content2 = reader.readLine()) != null) {
+            if (content2.equals("Mend")) {
                 System.out.println("Mend");
-                writeToFile(this.in_txt_path,false);
+                writeToFile(this.in_txt_path, false);
                 break;
             }
             System.out.println(content2);
@@ -77,17 +76,17 @@ public class Service extends Thread {
     }
     // public void SPgetMessage() throws IOException
     // {
-    //     System.out.println("SPstart");
-    //     inlines = new ArrayList<String>();
-    //     while((content2 = reader.readLine())!=null){
-    //         if(content2.equals("SPend")){
-    //             System.out.println("SPend");
-    //             writeToFile(this.in_txt_path,true);
-    //             break;
-    //         }
-    //         System.out.println(content2);
-    //         inlines.add(content2);
-    //     }
+    // System.out.println("SPstart");
+    // inlines = new ArrayList<String>();
+    // while((content2 = reader.readLine())!=null){
+    // if(content2.equals("SPend")){
+    // System.out.println("SPend");
+    // writeToFile(this.in_txt_path,true);
+    // break;
+    // }
+    // System.out.println(content2);
+    // inlines.add(content2);
+    // }
     // }
 
     public void sendMessage(Socket socket, String context) {
@@ -117,7 +116,7 @@ public class Service extends Thread {
         System.out.println("java test");
         Process proc;
         try {
-            proc = Runtime.getRuntime().exec("python Server/test.py");
+            proc = Runtime.getRuntime().exec(python_exec);
             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             String line = null;
             lines = new ArrayList<String>();
@@ -136,8 +135,8 @@ public class Service extends Thread {
         System.out.println("java over\n");
     }
 
-    public void writeToFile(String path,boolean isHead) throws IOException {
-        FileWriter fw = new FileWriter(path,isHead);
+    public void writeToFile(String path, boolean isHead) throws IOException {
+        FileWriter fw = new FileWriter(path, isHead);
         BufferedWriter bw = new BufferedWriter(fw);
         for (String line : lines) {
             bw.write(line);

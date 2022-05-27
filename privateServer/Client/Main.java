@@ -32,7 +32,7 @@ public class Main {
     public void readToList() {
         try {
             list = new ArrayList<>();
-            FileReader fr = new FileReader("privateServer/Client/sample.csv");
+            FileReader fr = new FileReader("privateServer/Client/sample.html");
             BufferedReader br = new BufferedReader(fr);
             String line = "";
             while ((line = br.readLine()) != null) {
@@ -56,7 +56,7 @@ public class Main {
 
     public void contextToFile() {
         try {
-            FileWriter fw = new FileWriter("privateServer/Client/sample2.csv");
+            FileWriter fw = new FileWriter("privateServer/Client/sample2.html");
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(context);
             bw.close();

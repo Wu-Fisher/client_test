@@ -1,19 +1,25 @@
 Privacy information,Collecting action,Collector,Condition
-Web site,['use'],First party,
-demographic information,['use'],First party,
-name,['use'],First party,
-email,['use'],First party,
-address,['use'],First party,
-financial information,['used'],First party,"to fill customer 's orders . If we have trouble processing an order , the information is used to contact the user . "
-name,['used'],First party,"to fill customer 's orders . If we have trouble processing an order , the information is used to contact the user . "
-email,['used'],First party,"to fill customer 's orders . If we have trouble processing an order , the information is used to contact the user . "
-address,['used'],First party,"to fill customer 's orders . If we have trouble processing an order , the information is used to contact the user . "
-clear gifs,['use'],First party,
-them,['ask'],First party,
-precaution,['takes'],First party(default),
-contact address,"['collect', 'retain', 'save']",Third party,if the UPLOAD is clicked . 
-user id,"['collect', 'retain', 'save']",Third party,if the UPLOAD is clicked . 
-name,"['collect', 'retain', 'save']",Third party,if the UPLOAD is clicked . 
-name,['collect'],First party,
-address,['collect'],First party,
-gender,['collect'],First party,
+Contact Information,['used'],First party,to provide information to Data Subjects regarding the Special Olympics activities and our mission and to solicit donations to Special Olympics ' 
+Employee Data,['used'],First party,
+Personal Information,['process'],First party,"to perform computer operations , quality assurance , testing , and other operations activities necessary for the above purposes ' "
+Personal Information,['shared'],Third party,
+third parties,['uses'],Third party,"to provide credit card , bank , payment and information processing services ' "
+Personal Information,['processed'],Third party,
+Personal Information,['processed'],First party(default),
+International Data,['retained'],First party(default),
+Event Data,['retained'],First party(default),
+Registration Data,['retained'],First party(default),
+b,['retained'],First party(default),
+data,['retained'],First party(default),
+test data,['retained'],First party(default),
+games data,['retained'],First party(default),
+registration data,['retained'],First party(default),
+National Data,['retained'],First party(default),until up to five years after the Data Subject discontinues participating with special Olympics ' 
+Registration Data,['retained'],First party(default),until up to five years after the Data Subject discontinues participating with special Olympics ' 
+Participation Data,['retained'],First party(default),until the Data Subject asks for his/her information to be deleted ' 
+b Health,['retained'],First party(default),
+Research Data,['retained'],First party(default),
+ongoing relationship,['retained'],First party(default),
+Employee Data,['retained'],First party(default),
+data agreement,['enter'],First party(default),before exporting data to SOI ' 
+transfer agreement,['enter'],First party(default),before exporting data to SOI ' 
