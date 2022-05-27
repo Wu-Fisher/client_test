@@ -16,6 +16,7 @@ public class Service extends Thread {
     String content;
     String name = "p0";
     String score = "-1";
+    String USER_PATH = "user.txt";
 
     BufferedReader reader;
     List<User> userlist = new ArrayList<User>();
@@ -133,11 +134,12 @@ public class Service extends Thread {
 
     public void UserListToFile() {
         try {
-            FileWriter fw = new FileWriter("user.txt");
+            FileWriter fw = new FileWriter(USER_PATH);
             BufferedWriter bw = new BufferedWriter(fw);
             for (User user : userlist) {
                 String content = user.getName() + "," + user.getAccount() + "," + user.getPassword();
                 bw.write(content);
+                bw.newLine();
             }
             bw.flush();
             bw.close();
@@ -149,7 +151,7 @@ public class Service extends Thread {
     public void FileToUserList() {
         try {
             userlist.clear();
-            FileReader fr = new FileReader("user.txt");
+            FileReader fr = new FileReader(USER_PATH);
             BufferedReader br = new BufferedReader(fr);
             String str = null;
             while ((str = br.readLine()) != null) {
@@ -171,7 +173,7 @@ public class Service extends Thread {
             String account = reader.readLine();
             String password = reader.readLine();
             User user = getUser(name, account, password);
-            if (user == null) {
+            if (user == null&&name!=null&&password!=null&&account!=null) {
                 userlist.add(new User(name, account, password));
                 UserListToFile();
                 sendMessage(this.socket, "success");
