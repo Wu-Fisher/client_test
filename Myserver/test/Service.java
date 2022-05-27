@@ -87,7 +87,7 @@ public class Service extends Thread {
                         }
                     }
                 } else if (content.equals("register")) {
-                    synchronized (MyServer.isOVER) {
+                    synchronized (MyServer.lock) {
                         register();
                     }
                 } else if (content.equals("login")) {
@@ -124,7 +124,6 @@ public class Service extends Thread {
 
     public String recieveMessage(Socket socket) {
         try {
-            BufferedReader reader = new BufferedReader(new java.io.InputStreamReader(socket.getInputStream()));
             return reader.readLine();
         } catch (Exception e) {
             e.printStackTrace();
@@ -167,9 +166,10 @@ public class Service extends Thread {
     public void register() {
         try {
             FileToUserList();
-            String name = recieveMessage(this.socket);
-            String account = recieveMessage(this.socket);
-            String password = recieveMessage(this.socket);
+
+            String name =  reader.readLine();
+            String account = reader.readLine();
+            String password = reader.readLine();
             User user = getUser(name, account, password);
             if (user == null) {
                 userlist.add(new User(name, account, password));
@@ -187,8 +187,8 @@ public class Service extends Thread {
     public void login() {
         try {
             FileToUserList();
-            String account = recieveMessage(this.socket);
-            String password = recieveMessage(this.socket);
+            String account = reader.readLine();
+            String password = reader.readLine();
             User user = getUser(account, password);
             if (user != null) {
                 sendMessage(this.socket, "success");
