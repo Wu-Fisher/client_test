@@ -231,8 +231,11 @@ public class PlayerClient {
         try {
             PrintWriter pw = new PrintWriter(socket.getOutputStream());
             pw.println("register");
+            pw.flush();
             pw.println(name);
+            pw.flush();
             pw.println(account);
+            pw.flush();
             pw.println(password);
             pw.flush();
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
