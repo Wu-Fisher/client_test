@@ -20,8 +20,10 @@ public class PlayerClient {
     public boolean isWaiting = false;
     public boolean isAllOver = false;
 
+    public String playerName = "testplayer";
+
     public Socket socket;
-    public String acc = "10.249.9.101";
+    public String acc = "10.249.8.149";
 
     ExecutorService ReadThreadExecutor;
     ExecutorService WriteThreadExecutor;
@@ -80,16 +82,6 @@ public class PlayerClient {
             public void run() {
 
                 sendContent("requestpk", socket);
-
-                // TODO Auto-generated method stub
-                // try {
-                // PrintWriter pw = new PrintWriter(socket.getOutputStream());
-                // String content = "requestpk";
-                // pw.println(content);
-                // pw.flush();
-                // } catch (Exception e) {
-                // e.printStackTrace();
-                // }
             }
         });
 
@@ -125,15 +117,6 @@ public class PlayerClient {
         WriteThreadExecutor.submit(new Runnable() {
             @Override
             public void run() {
-                // TODO Auto-generated method stub
-                // try {
-                // PrintWriter pw = new PrintWriter(socket.getOutputStream());
-                // String content = score;
-                // pw.println(content);
-                // pw.flush();
-                // } catch (Exception e) {
-                // e.printStackTrace();
-                // }
                 sendContent(score, socket);
             }
         });
@@ -144,15 +127,6 @@ public class PlayerClient {
         WriteThreadExecutor.submit(new Runnable() {
             @Override
             public void run() {
-                // TODO Auto-generated method stub
-                // try {
-                // PrintWriter pw = new PrintWriter(socket.getOutputStream());
-                // String content = "otherscore";
-                // pw.println(content);
-                // pw.flush();
-                // } catch (Exception e) {
-                // e.printStackTrace();
-                // }
                 sendContent("otherscore", socket);
             }
         });
@@ -160,15 +134,6 @@ public class PlayerClient {
         ReadThreadExecutor.submit(new Runnable() {
             @Override
             public void run() {
-                // TODO Auto-generated method stub
-                // try {
-                // BufferedReader br = new BufferedReader(new
-                // InputStreamReader(socket.getInputStream()));
-                // String content = br.readLine();
-                // opscore = content;
-                // } catch (Exception e) {
-                // e.printStackTrace();
-                // }
                 opscore = getContent(socket);
             }
         });
@@ -177,28 +142,12 @@ public class PlayerClient {
 
     public void sendOver() {
 
-        // try {
-        // PrintWriter pw = new PrintWriter(socket.getOutputStream());
-        // String content = "over";
-        // pw.println(content);
-        // pw.flush();
-        // } catch (Exception e) {
-        // e.printStackTrace();
-        // }
         sendContent("over", socket);
     }
 
     public void gameOver(int score) {
         setYourScore(score);
         sendContent(this.score, socket);
-        // try {
-        // PrintWriter pw = new PrintWriter(socket.getOutputStream());
-        // String content = this.score;
-        // pw.println(content);
-        // pw.flush();
-        // } catch (Exception e) {
-        // e.printStackTrace();
-        // }
         sendOver();
     }
 
@@ -232,24 +181,6 @@ public class PlayerClient {
         String content = getContent(socket);
         opscore = content;
         return getOppScore();
-        // try {
-        // PrintWriter pw = new PrintWriter(socket.getOutputStream());
-        // String content = "otherscore";
-        // pw.println(content);
-        // pw.flush();
-        // } catch (Exception e) {
-        // e.printStackTrace();
-        // }
-
-        // try {
-        // BufferedReader br = new BufferedReader(new
-        // InputStreamReader(socket.getInputStream()));
-        // String content = br.readLine();
-        // opscore = content;
-        // } catch (Exception e) {
-        // e.printStackTrace();
-        // }
-        // return getOppScore();
 
     }
 
@@ -293,4 +224,54 @@ public class PlayerClient {
         }
         return content;
     }
+
+    // 登陆部分
+
+    public boolean register(String name, String account, String password) {
+        try {
+            PrintWriter pw = new PrintWriter(socket.getOutputStream());
+            pw.println("register");
+            pw.println(name);
+            pw.println(account);
+            pw.println(password);
+            pw.flush();
+            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String content = br.readLine();
+            if (content.equals("success")) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean login(String accout, String password) {
+        try {
+            PrintWriter pw = new PrintWriter(socket.getOutputStream());
+            pw.println("login");
+            pw.println(accout);
+            pw.println(password);
+            pw.flush();
+            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String content = br.readLine();
+            if (content.equals("success")) {
+                try {
+                    BufferedReader br2 = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    playerName = br2.readLine();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

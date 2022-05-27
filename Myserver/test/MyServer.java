@@ -15,6 +15,7 @@ public class MyServer {
 
     public static HashMap<String, String> map = new HashMap<String, String>();
     public static int[] isOVER = new int[2];
+    public static Object lock = new Object();
     public int port = 9999;
 
     public MyServer(int port) {
