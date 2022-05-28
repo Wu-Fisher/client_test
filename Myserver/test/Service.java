@@ -162,6 +162,7 @@ public class Service extends Thread {
                     this.name = "p1";
                     this.score = "0";
                     MyServer.map.put("p1", "0");
+                    break;
                 case 1:
                     if (this.name == "p0") {
                         this.name = "p2";
@@ -171,7 +172,7 @@ public class Service extends Thread {
                         MyServer.map.put("p2", "0");
                         this.score = "0";
                     }
-
+                    break;
                 case 2:
                     if(this.name=="p0")
                     {
@@ -181,6 +182,7 @@ public class Service extends Thread {
                     {
                         sendMessage(this.socket, "p2");
                     }
+                    break;
                 }
         }
     }
