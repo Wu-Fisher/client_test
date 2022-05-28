@@ -9,17 +9,29 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Service extends Thread {
     Socket socket;
     String content;
-    String name = "p0";
-    String score = "-1";
-    String USER_PATH = "user.txt";
 
+    // 用于双方对战
+    String name = "p0";
+    String score = "0";
+
+    // 储存数据
+    String USER_PATH = "user.txt";
+    String SCORE_PATH = "score.txt";
+
+    // 读写socket
     BufferedReader reader;
+    PrintWriter writer;
+
+    // 程序中的信息
     List<User> userlist = new ArrayList<User>();
+    List<RankListData> ranklist = new ArrayList<RankListData>();
 
     public Service(Socket socket) {
         this.socket = socket;
@@ -35,58 +47,15 @@ public class Service extends Thread {
         try {
             while ((content = reader.readLine()) != null) {
                 System.out.println(content);
-                if (content.equals("exit")) {
+
+                if (content.equals("discoonnect")) {
                     System.out.println("Client disconnected");
                     MyServer.socketlist.remove(socket);
-                    MyServer.map.remove(name);
-                    Arrays.fill(MyServer.isOVER, 0);
                     socket.shutdownInput();
                     socket.shutdownOutput();
                     socket.close();
                 } else if (content.equals("requestpk")) {
-                    switch (MyServer.socketlist.size()) {
-                        case 1:
-                            sendMessage(this.socket, "p1");
-                            this.name = "p1";
-                            break;
-                        case 2:
-                            for (Socket s : MyServer.socketlist) {
-                                sendMessage(s, "p2");
-
-                            }
-                            break;
-                        default:
-                            sendMessage(this.socket, "busy");
-                            break;
-                    }
-                } else if (content.equals("otherscore")) {
-                    if (this.name == "p1") {
-                        sendMessage(this.socket, MyServer.map.getOrDefault("p2", "0"));
-                    } else {
-                        sendMessage(this.socket, MyServer.map.getOrDefault("p1", "0"));
-                    }
-                } else if (content.equals("over")) {
-                    if (this.name == "p1") {
-                        MyServer.isOVER[0] = 1;
-                    } else {
-                        MyServer.isOVER[1] = 1;
-                    }
-                } else if (content.equals("wait")) {
-                    {
-                        if (this.name == "p1") {
-                            if (MyServer.isOVER[1] == 1 && MyServer.isOVER[0] == 1) {
-                                sendMessage(this.socket, "over");
-                            } else {
-                                sendMessage(this.socket, "wait");
-                            }
-                        } else {
-                            if (MyServer.isOVER[0] == 1 && MyServer.isOVER[1] == 1) {
-                                sendMessage(this.socket, "over");
-                            } else {
-                                sendMessage(this.socket, "wait");
-                            }
-                        }
-                    }
+                    netGame();
                 } else if (content.equals("register")) {
                     synchronized (MyServer.lock) {
                         register();
@@ -94,14 +63,6 @@ public class Service extends Thread {
                 } else if (content.equals("login")) {
                     synchronized (MyServer.lock) {
                         login();
-                    }
-                }
-
-                else {
-                    if (this.name == "p1") {
-                        MyServer.map.put("p1", content);
-                    } else {
-                        MyServer.map.put("p2", content);
                     }
                 }
             }
@@ -113,9 +74,7 @@ public class Service extends Thread {
     }
 
     public void sendMessage(Socket socket, String context) {
-        PrintWriter writer = null;
         try {
-            writer = new PrintWriter(socket.getOutputStream());
             writer.println(context);
             writer.flush();
         } catch (Exception e) {
@@ -131,6 +90,85 @@ public class Service extends Thread {
         }
         return null;
     }
+
+    // 进行联机游戏阶段
+    public void netGame() throws IOException {
+        checkPlayer();
+        while ((content = reader.readLine()) != null) {
+            if (content.equals("requestpk")) {
+                checkPlayer();
+            } else if (content.equals("otherscore")) {
+                if (this.name == "p1") {
+                    sendMessage(this.socket, MyServer.map.getOrDefault("p2", "0"));
+                } else {
+                    sendMessage(this.socket, MyServer.map.getOrDefault("p1", "0"));
+                }
+            } else if (content.equals("over")) {
+                if (this.name == "p1") {
+                    MyServer.isOVER[0] = 1;
+                } else {
+                    MyServer.isOVER[1] = 1;
+                }
+            } else if (content.equals("wait")) {
+                {
+                    if (this.name == "p1") {
+                        if (MyServer.isOVER[1] == 1 && MyServer.isOVER[0] == 1) {
+                            sendMessage(this.socket, "over");
+                        } else {
+                            sendMessage(this.socket, "wait");
+                        }
+                    } else {
+                        if (MyServer.isOVER[0] == 1 && MyServer.isOVER[1] == 1) {
+                            sendMessage(this.socket, "over");
+                        } else {
+                            sendMessage(this.socket, "wait");
+                        }
+                    }
+                }
+            } else if (content.equals("exit")) {
+                System.out.println("本次游戏结束");
+                MyServer.map.clear();
+                Arrays.fill(MyServer.isOVER, 0);
+                break;
+            } else {
+                if (this.name == "p1") {
+                    MyServer.map.put("p1", content);
+                } else {
+                    MyServer.map.put("p2", content);
+                }
+            }
+
+        }
+
+    }
+
+    public void checkPlayer() {
+        synchronized (MyServer.lock) {
+            switch (MyServer.map.size()) {
+                case 0:
+                    sendMessage(this.socket, "p1");
+                    this.name = "p1";
+                    this.score = "0";
+                    MyServer.map.put("p1", "0");
+                    break;
+                case 1:
+                    for (Socket s : MyServer.socketlist) {
+                        sendMessage(s, "p2");
+                    }
+                    MyServer.map.put("p2", "0");
+                    if (this.name != "p1") {
+                        this.name = "p2";
+                    }
+                    this.score = "0";
+                    break;
+                default:
+                    sendMessage(this.socket, "busy");
+                    break;
+            }
+        }
+    }
+
+    // 登陆注册部分
 
     public void UserListToFile() {
         try {
@@ -169,11 +207,11 @@ public class Service extends Thread {
         try {
             FileToUserList();
 
-            String name =  reader.readLine();
+            String name = reader.readLine();
             String account = reader.readLine();
             String password = reader.readLine();
             User user = getUser(name, account, password);
-            if (user == null&&name!=null&&password!=null&&account!=null) {
+            if (user == null && name != null && password != null && account != null) {
                 userlist.add(new User(name, account, password));
                 UserListToFile();
                 sendMessage(this.socket, "success");
@@ -221,6 +259,57 @@ public class Service extends Thread {
 
         }
         return null;
+    }
+
+    // 排行榜部分
+
+    public void ScoreListToFile() {
+        try {
+            FileWriter fw = new FileWriter(SCORE_PATH);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (RankListData score : ranklist) {
+                String content = score.getName() + "," + score.getScore() + ","
+                        + TimeUnit.calenderToString(score.getDate());
+                bw.write(content);
+                bw.newLine();
+            }
+            bw.flush();
+            bw.close();
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void FileToScoreList() {
+        try {
+            ranklist.clear();
+            FileReader fr = new FileReader(SCORE_PATH);
+            BufferedReader br = new BufferedReader(fr);
+            String str = null;
+            while ((str = br.readLine()) != null) {
+                String[] parts = str.split(",");
+                RankListData score = new RankListData(0, Integer.parseInt(parts[1]), parts[0],
+                        TimeUnit.stringToCalendar(parts[2]));
+                ranklist.add(score);
+            }
+            br.close();
+        } catch (Exception e) {
+        }
+
+    }
+
+    public void getScoreList() {
+        try {
+            FileToScoreList();
+            for (RankListData score : ranklist) {
+                String content = score.getName() + "," + score.getScore() + ","
+                        + TimeUnit.calenderToString(score.getDate());
+                sendMessage(this.socket, content);
+            }
+            sendMessage(this.socket, "listsendover");
+        } catch (Exception e) {
+
+        }
     }
 
 }

@@ -1,11 +1,14 @@
 package test;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -20,18 +23,37 @@ public class PlayerClient {
     public boolean isWaiting = false;
     public boolean isAllOver = false;
 
+    public void resetButNotExit() {
+        isPlaying = false;
+        isReady = false;
+        isBusy = false;
+        isWaiting = false;
+        isAllOver = false;
+
+        name = "p0";
+        score = "0";
+        opscore = "0";
+
+    }
+
     public String playerName = "testplayer";
 
     public Socket socket;
     public String acc = "10.249.8.149";
 
+    public List<RankListData> ranklist = new ArrayList<RankListData>();
+
     ExecutorService ReadThreadExecutor;
     ExecutorService WriteThreadExecutor;
+    BufferedReader br;
+    PrintWriter pw;;
 
     public PlayerClient(int port) throws UnknownHostException, IOException {
         this.socket = new Socket(acc, port);
         ReadThreadExecutor = Executors.newSingleThreadExecutor();
         WriteThreadExecutor = Executors.newSingleThreadExecutor();
+        br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        pw = new PrintWriter(socket.getOutputStream());
     }
 
     public PlayerClient(String acc, int port) throws UnknownHostException, IOException {
@@ -39,6 +61,9 @@ public class PlayerClient {
         this.socket = new Socket(acc, port);
         ReadThreadExecutor = Executors.newSingleThreadExecutor();
         WriteThreadExecutor = Executors.newSingleThreadExecutor();
+        br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        pw = new PrintWriter(socket.getOutputStream());
+
     }
 
     // 及时更新调用
@@ -89,7 +114,6 @@ public class PlayerClient {
             @Override
             public void run() {
                 try {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     String content = br.readLine();
                     if (content.equals("p1")) {
                         name = "p1";
@@ -162,7 +186,6 @@ public class PlayerClient {
             }
 
             try {
-                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String content = br.readLine();
                 if (content.equals("over")) {
                     isAllOver = true;
@@ -198,16 +221,18 @@ public class PlayerClient {
                 }
             }
         }).start();
-        ReadThreadExecutor.shutdown();
-        WriteThreadExecutor.shutdown();
+
+    }
+
+    public void discoonnect() {
+        sendContent("disconnect", socket);
     }
 
     public void sendContent(String content, Socket socket) {
         try {
-            PrintWriter pw = new PrintWriter(socket.getOutputStream());
             pw.println(content);
             pw.flush();
-        } catch (IOException e) {
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -216,7 +241,6 @@ public class PlayerClient {
     public String getContent(Socket socket) {
         String content = "";
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             content = br.readLine();
         } catch (Exception e) {
 
@@ -229,7 +253,6 @@ public class PlayerClient {
 
     public boolean register(String name, String account, String password) {
         try {
-            PrintWriter pw = new PrintWriter(socket.getOutputStream());
             pw.println("register");
             pw.flush();
             pw.println(name);
@@ -238,7 +261,6 @@ public class PlayerClient {
             pw.flush();
             pw.println(password);
             pw.flush();
-            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String content = br.readLine();
             if (content.equals("success")) {
                 return true;
@@ -253,17 +275,14 @@ public class PlayerClient {
 
     public boolean login(String accout, String password) {
         try {
-            PrintWriter pw = new PrintWriter(socket.getOutputStream());
             pw.println("login");
             pw.println(accout);
             pw.println(password);
             pw.flush();
-            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String content = br.readLine();
             if (content.equals("success")) {
                 try {
-                    BufferedReader br2 = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    playerName = br2.readLine();
+                    playerName = br.readLine();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
