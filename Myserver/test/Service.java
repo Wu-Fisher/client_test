@@ -37,6 +37,7 @@ public class Service extends Thread {
         this.socket = socket;
         try {
             reader = new BufferedReader(new java.io.InputStreamReader(socket.getInputStream()));
+            writer = new PrintWriter(socket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
