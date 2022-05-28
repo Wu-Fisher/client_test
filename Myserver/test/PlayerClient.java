@@ -183,8 +183,9 @@ public class PlayerClient {
     public void waitOppGameOver() {
         while (true) {
             try {
-                String content = "wait";
-                sendContent(content, this.socket);
+                System.out.println("send wait");
+                sendContent("wait", socket);
+
                 Thread.sleep(500);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -192,6 +193,7 @@ public class PlayerClient {
 
             try {
                 String content = br.readLine();
+                System.out.println("get wait");
                 if (content.equals("over")) {
                     isAllOver = true;
                     break;
@@ -322,12 +324,12 @@ public class PlayerClient {
         return ranklist;
     }
 
-    public boolean addObject(RankListData data) {
-        try {
-            pw.println("adddate");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    // public boolean addObject(RankListData data) {
+    // try {
+    // pw.println("adddate");
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // }
+    // }
 
 }

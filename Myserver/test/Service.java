@@ -137,7 +137,6 @@ public class Service extends Thread {
                 Arrays.fill(MyServer.isOVER, 0);
                 this.name = "p0";
                 this.score = "0";
-
                 break;
             } else {
                 if (this.name == "p1") {
