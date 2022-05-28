@@ -137,9 +137,9 @@ public class Service extends Thread {
                 System.out.println("本次游戏结束");
                 MyServer.map.clear();
                 Arrays.fill(MyServer.isOVER, 0);
-                this.name="p0";
-                this.score="0";
-                
+                this.name = "p0";
+                this.score = "0";
+
                 break;
             } else {
                 if (this.name == "p1") {
@@ -155,6 +155,7 @@ public class Service extends Thread {
 
     public void checkPlayer() {
         synchronized (MyServer.lock) {
+            System.out.println("当前有" + MyServer.map.size() + "个玩家");
             switch (MyServer.map.size()) {
                 case 0:
                     sendMessage(this.socket, "p1");
