@@ -98,6 +98,7 @@ public class PlayerClient {
                 isPlaying = true;
                 return true;
             } else if (isBusy) {
+                isBusy = true;
                 return true;
             }
         }
