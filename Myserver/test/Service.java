@@ -135,6 +135,9 @@ public class Service extends Thread {
                 System.out.println("本次游戏结束");
                 MyServer.map.clear();
                 Arrays.fill(MyServer.isOVER, 0);
+                this.name="p0";
+                this.score="0";
+                
                 break;
             } else {
                 if (this.name == "p1") {
@@ -158,12 +161,13 @@ public class Service extends Thread {
                     MyServer.map.put("p1", "0");
                     break;
                 case 1:
-                    for (Socket s : MyServer.socketlist) {
-                        sendMessage(s, "p2");
-                    }
-                    MyServer.map.put("p2", "0");
+
                     if (this.name != "p1") {
                         this.name = "p2";
+                        for (Socket s : MyServer.socketlist) {
+                            sendMessage(s, "p2");
+                        }
+                        MyServer.map.put("p2", "0");
                     }
                     this.score = "0";
                     break;
