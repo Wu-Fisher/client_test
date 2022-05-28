@@ -99,8 +99,10 @@ public class Service extends Thread {
 
     // 进行联机游戏阶段
     public void netGame() throws IOException {
+        MyServer.map.clear();
         checkPlayer();
         while ((content = reader.readLine()) != null) {
+            System.out.println(content);
             if (content.equals("requestpk")) {
                 checkPlayer();
             } else if (content.equals("otherscore")) {
@@ -159,22 +161,26 @@ public class Service extends Thread {
                     this.name = "p1";
                     this.score = "0";
                     MyServer.map.put("p1", "0");
-                    break;
                 case 1:
-
-                    if (this.name != "p1") {
+                    if (this.name == "p0") {
                         this.name = "p2";
                         for (Socket s : MyServer.socketlist) {
                             sendMessage(s, "p2");
                         }
                         MyServer.map.put("p2", "0");
+                        this.score = "0";
                     }
-                    this.score = "0";
-                    break;
-                default:
+
+                case 2:
+                    if(this.name=="p0")
+                    {
                     sendMessage(this.socket, "busy");
-                    break;
-            }
+                    }
+                    else
+                    {
+                        sendMessage(this.socket, "p2");
+                    }
+                }
         }
     }
 
