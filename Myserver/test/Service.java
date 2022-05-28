@@ -164,7 +164,7 @@ public class Service extends Thread {
                     MyServer.map.put("p1", "0");
                     break;
                 case 1:
-                    if (this.name == "p0") {
+                    if (this.name != "p1") {
                         this.name = "p2";
                         for (Socket s : MyServer.socketlist) {
                             sendMessage(s, "p2");
