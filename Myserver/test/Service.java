@@ -9,8 +9,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class Service extends Thread {
@@ -65,6 +63,13 @@ public class Service extends Thread {
                     synchronized (MyServer.lock) {
                         login();
                     }
+
+                } else if (content.equals("getdata")) {
+                    getScoreList();
+                } else if (content.equals("adddata")) {
+                    addScore();
+                } else if (content.equals("deletedata")) {
+                    deleteScore();
                 }
             }
         } catch (IOException e) {
@@ -282,19 +287,21 @@ public class Service extends Thread {
     }
 
     public void FileToScoreList() {
-        try {
-            ranklist.clear();
-            FileReader fr = new FileReader(SCORE_PATH);
-            BufferedReader br = new BufferedReader(fr);
-            String str = null;
-            while ((str = br.readLine()) != null) {
-                String[] parts = str.split(",");
-                RankListData score = new RankListData(0, Integer.parseInt(parts[1]), parts[0],
-                        TimeUnit.stringToCalendar(parts[2]));
-                ranklist.add(score);
+        synchronized (MyServer.lock) {
+            try {
+                ranklist.clear();
+                FileReader fr = new FileReader(SCORE_PATH);
+                BufferedReader br = new BufferedReader(fr);
+                String str = null;
+                while ((str = br.readLine()) != null) {
+                    String[] parts = str.split(",");
+                    RankListData score = new RankListData(0, Integer.parseInt(parts[1]), parts[0],
+                            TimeUnit.stringToCalendar(parts[2]));
+                    ranklist.add(score);
+                }
+                br.close();
+            } catch (Exception e) {
             }
-            br.close();
-        } catch (Exception e) {
         }
 
     }
@@ -310,6 +317,47 @@ public class Service extends Thread {
             sendMessage(this.socket, "listsendover");
         } catch (Exception e) {
 
+        }
+    }
+
+    public void addScore() {
+        synchronized (MyServer.lock) {
+            try {
+                FileToScoreList();
+                String str = reader.readLine();
+                String[] parts = str.split(",");
+                RankListData score = new RankListData(0, Integer.parseInt(parts[1]), parts[0],
+                        TimeUnit.stringToCalendar(parts[2]));
+                ranklist.add(score);
+                ScoreListToFile();
+                sendMessage(this.socket, "success");
+            } catch (Exception e) {
+
+            }
+        }
+    }
+
+    public void deleteScore() {
+        synchronized (MyServer.lock) {
+            try {
+                FileToScoreList();
+                String str = reader.readLine();
+                String[] parts = str.split(",");
+                RankListData score = new RankListData(0, Integer.parseInt(parts[1]), parts[0],
+                        TimeUnit.stringToCalendar(parts[2]));
+                for (RankListData s : ranklist) {
+                    if (s.getName().equals(score.getName()) && s.getScore() == score.getScore()
+                            && TimeUnit.calenderToString(s.getDate())
+                                    .equals(TimeUnit.calenderToString(score.getDate()))) {
+                        ranklist.remove(s);
+                        break;
+                    }
+                }
+                ScoreListToFile();
+                sendMessage(this.socket, "success");
+            } catch (Exception e) {
+
+            }
         }
     }
 

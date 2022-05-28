@@ -40,6 +40,7 @@ public class PlayerClient {
 
     public Socket socket;
     public String acc = "10.249.8.149";
+    public boolean isConnected = false;
 
     public List<RankListData> ranklist = new ArrayList<RankListData>();
 
@@ -48,22 +49,25 @@ public class PlayerClient {
     BufferedReader br;
     PrintWriter pw;;
 
-    public PlayerClient(int port) throws UnknownHostException, IOException {
-        this.socket = new Socket(acc, port);
-        ReadThreadExecutor = Executors.newSingleThreadExecutor();
-        WriteThreadExecutor = Executors.newSingleThreadExecutor();
-        br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        pw = new PrintWriter(socket.getOutputStream());
+    public PlayerClient(String acc, int port) {
+        isConnected = Connect(acc, port);
     }
 
-    public PlayerClient(String acc, int port) throws UnknownHostException, IOException {
-        this.acc = acc;
-        this.socket = new Socket(acc, port);
-        ReadThreadExecutor = Executors.newSingleThreadExecutor();
-        WriteThreadExecutor = Executors.newSingleThreadExecutor();
-        br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        pw = new PrintWriter(socket.getOutputStream());
+    public boolean Connect(String acc, int port) {
+        try {
+            this.acc = acc;
+            this.socket = new Socket(acc, port);
+            ReadThreadExecutor = Executors.newSingleThreadExecutor();
+            WriteThreadExecutor = Executors.newSingleThreadExecutor();
+            br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            pw = new PrintWriter(socket.getOutputStream());
+        } catch (Exception e) {
 
+            e.printStackTrace();
+            isConnected = false;
+            return false;
+        }
+        return true;
     }
 
     // 及时更新调用
@@ -294,6 +298,35 @@ public class PlayerClient {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public List<RankListData> updDatas() {
+        try {
+            ranklist.clear();
+            pw.println("getdata");
+            pw.flush();
+            while (true) {
+                String content = br.readLine();
+                if (content.equals("listsendover")) {
+                    break;
+                }
+                String[] parts = content.split(",");
+                RankListData score = new RankListData(0, Integer.parseInt(parts[1]), parts[0],
+                        TimeUnit.stringToCalendar(parts[2]));
+                ranklist.add(score);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ranklist;
+    }
+
+    public boolean addObject(RankListData data) {
+        try {
+            pw.println("adddate");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

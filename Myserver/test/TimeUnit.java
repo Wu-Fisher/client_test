@@ -3,8 +3,6 @@ package test;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import javax.print.CancelablePrintJob;
-
 public class TimeUnit {
     public static SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm");
 
