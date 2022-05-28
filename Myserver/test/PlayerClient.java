@@ -322,12 +322,12 @@ public class PlayerClient {
         return ranklist;
     }
 
-    public boolean addObject(RankListData data) {
-        try {
-            pw.println("adddate");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    // public boolean addObject(RankListData data) {
+    //     try {
+    //         pw.println("adddate");
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 
 }

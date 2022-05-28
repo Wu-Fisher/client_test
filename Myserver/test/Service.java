@@ -99,7 +99,6 @@ public class Service extends Thread {
 
     // 进行联机游戏阶段
     public void netGame() throws IOException {
-        MyServer.map.clear();
         checkPlayer();
         while ((content = reader.readLine()) != null) {
             System.out.println(content);
@@ -154,7 +153,7 @@ public class Service extends Thread {
     }
 
     public void checkPlayer() {
-        synchronized (MyServer.lock) {
+
             System.out.println("当前有" + MyServer.map.size() + "个玩家");
             switch (MyServer.map.size()) {
                 case 0:
@@ -164,6 +163,7 @@ public class Service extends Thread {
                     MyServer.map.put("p1", "0");
                     break;
                 case 1:
+
                     if (this.name != "p1") {
                         this.name = "p2";
                         for (Socket s : MyServer.socketlist) {
@@ -184,7 +184,7 @@ public class Service extends Thread {
                     }
                     break;
                 }
-        }
+        
     }
 
     // 登陆注册部分
