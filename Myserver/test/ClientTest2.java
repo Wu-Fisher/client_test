@@ -30,7 +30,7 @@ public class ClientTest2 {
             System.out.println("busy");
         } else {
             System.out.println("开始游戏");
-            for (int i = 0; i < 40; i++) {
+            for (int i = 0; i < 20; i++) {
                 try {
                     score += 120;
                     pc.setYourScore(score);
