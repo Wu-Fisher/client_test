@@ -102,6 +102,7 @@ public class Service extends Thread {
         Arrays.fill(MyServer.isOVER, 0);
         checkPlayer();
         while ((content = reader.readLine()) != null) {
+            System.out.println(content);
             if (content.equals("requestpk")) {
                 checkPlayer();
             } else if (content.equals("otherscore")) {
