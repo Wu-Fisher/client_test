@@ -214,29 +214,23 @@ public class PlayerClient {
     }
 
     public void waitOppGameOver() {
-        try {
-            resetWriterAndReader();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // try {
+        // // resetWriterAndReader();
+        // br.
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // }
         while (true) {
             try {
 
                 System.out.println("st wait");
                 String content = "wait";
-                pw.println(content);
-                pw.flush();
+                sendContent(content, socket);
                 System.out.println("send wait");
                 Thread.sleep(500);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-
-                String content = br.readLine();
+                String reply = getContent(socket);
                 System.out.println("get wait");
-                if (content.equals("over")) {
+                if (reply.equals("over")) {
                     isAllOver = true;
                     break;
                 }
@@ -245,6 +239,7 @@ public class PlayerClient {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
         }
     }
 
@@ -290,7 +285,9 @@ public class PlayerClient {
     public String getContent(Socket socket) {
         String content = "";
         try {
+
             content = br.readLine();
+            System.out.println("收到" + content);
         } catch (Exception e) {
 
             e.printStackTrace();

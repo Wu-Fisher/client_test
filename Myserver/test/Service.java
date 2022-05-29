@@ -45,7 +45,7 @@ public class Service extends Thread {
     public void run() {
         try {
             while ((content = reader.readLine()) != null) {
-                System.out.println(content);
+                System.out.println("从 " + this.name + "得到 " + content);
 
                 if (content.equals("discoonnect")) {
                     System.out.println("Client disconnected");
