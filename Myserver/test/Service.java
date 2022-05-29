@@ -128,13 +128,19 @@ public class Service extends Thread {
                 }
             } else if (content.equals("exit")) {
                 System.out.println("本次游戏结束");
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                // try {
+                // Thread.sleep(3000);
+                // } catch (InterruptedException e) {
+                // // TODO Auto-generated catch block
+                // e.printStackTrace();
+                // }
+                if (MyServer.exitNum == 0) {
+                    MyServer.exitNum++;
+                } else {
+                    MyServer.map.clear();
+                    MyServer.exitNum = 0;
                 }
-                MyServer.map.remove(this.name);
+
                 this.name = "p0";
                 this.score = "0";
                 break;

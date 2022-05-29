@@ -214,11 +214,11 @@ public class PlayerClient {
     }
 
     public void waitOppGameOver() {
-        try {
-            resetWriterAndReader();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // try {
+        // resetWriterAndReader();
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // }
         while (true) {
             try {
 
