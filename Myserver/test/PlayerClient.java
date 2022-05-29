@@ -223,9 +223,10 @@ public class PlayerClient {
                 if (reply.equals("over")) {
                     isAllOver = true;
                     break;
+                } else {
+                    System.out.println("wait opp");
+                    Thread.sleep(100);
                 }
-                System.out.println("wait opp");
-                Thread.sleep(500);
             } catch (Exception e) {
                 e.printStackTrace();
             }
