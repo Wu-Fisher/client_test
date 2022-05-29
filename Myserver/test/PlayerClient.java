@@ -1,11 +1,14 @@
 package test;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -20,25 +23,86 @@ public class PlayerClient {
     public boolean isWaiting = false;
     public boolean isAllOver = false;
 
+    public void resetButNotExit() {
+        isPlaying = false;
+        isReady = false;
+        isBusy = false;
+        isWaiting = false;
+        isAllOver = false;
+
+        name = "p0";
+        score = "0";
+        opscore = "0";
+
+    }
+
+    public String playerName = "testplayer";
+
     public Socket socket;
-    public String acc = "10.249.9.101";
+    public String acc = "10.249.8.149";
+    public boolean isConnected = false;
+
+    public List<RankListData> ranklist = new ArrayList<RankListData>();
 
     ExecutorService ReadThreadExecutor;
     ExecutorService WriteThreadExecutor;
+    BufferedReader br;
+    PrintWriter pw;;
 
-    public PlayerClient(int port) throws UnknownHostException, IOException {
-        this.socket = new Socket(acc, port);
+    public PlayerClient(String acc, int port) {
+        isConnected = Connect(acc, port);
+    }
+
+    public boolean Connect(String acc, int port) {
+        try {
+            this.acc = acc;
+            this.socket = new Socket(acc, port);
+            ReadThreadExecutor = Executors.newSingleThreadExecutor();
+            WriteThreadExecutor = Executors.newSingleThreadExecutor();
+            br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            pw = new PrintWriter(socket.getOutputStream());
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            isConnected = false;
+            return false;
+        }
+        return true;
+    }
+
+    public void resetExecuter()
+
+    {
+        try {
+            if (ReadThreadExecutor != null)
+                ReadThreadExecutor.shutdownNow();
+            if (WriteThreadExecutor != null)
+                WriteThreadExecutor.shutdownNow();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
         ReadThreadExecutor = Executors.newSingleThreadExecutor();
         WriteThreadExecutor = Executors.newSingleThreadExecutor();
     }
 
-    public PlayerClient(String acc, int port) throws UnknownHostException, IOException {
-        this.acc = acc;
-        this.socket = new Socket(acc, port);
-        ReadThreadExecutor = Executors.newSingleThreadExecutor();
-        WriteThreadExecutor = Executors.newSingleThreadExecutor();
-    }
+    public void resetWriterAndReader() {
+        // try {
+        // if (br != null)
+        // br.close();
+        // if (pw != null)
+        // pw.close();
+        // } catch (Exception e) {
+        // e.printStackTrace();
 
+        // }
+        try {
+            br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            pw = new PrintWriter(socket.getOutputStream());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     // 及时更新调用
 
     public void setYourScore(int score) {
@@ -67,6 +131,7 @@ public class PlayerClient {
                 isPlaying = true;
                 return true;
             } else if (isBusy) {
+                isBusy = true;
                 return true;
             }
         }
@@ -80,16 +145,6 @@ public class PlayerClient {
             public void run() {
 
                 sendContent("requestpk", socket);
-
-                // TODO Auto-generated method stub
-                // try {
-                // PrintWriter pw = new PrintWriter(socket.getOutputStream());
-                // String content = "requestpk";
-                // pw.println(content);
-                // pw.flush();
-                // } catch (Exception e) {
-                // e.printStackTrace();
-                // }
             }
         });
 
@@ -97,7 +152,6 @@ public class PlayerClient {
             @Override
             public void run() {
                 try {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     String content = br.readLine();
                     if (content.equals("p1")) {
                         name = "p1";
@@ -125,15 +179,6 @@ public class PlayerClient {
         WriteThreadExecutor.submit(new Runnable() {
             @Override
             public void run() {
-                // TODO Auto-generated method stub
-                // try {
-                // PrintWriter pw = new PrintWriter(socket.getOutputStream());
-                // String content = score;
-                // pw.println(content);
-                // pw.flush();
-                // } catch (Exception e) {
-                // e.printStackTrace();
-                // }
                 sendContent(score, socket);
             }
         });
@@ -144,15 +189,6 @@ public class PlayerClient {
         WriteThreadExecutor.submit(new Runnable() {
             @Override
             public void run() {
-                // TODO Auto-generated method stub
-                // try {
-                // PrintWriter pw = new PrintWriter(socket.getOutputStream());
-                // String content = "otherscore";
-                // pw.println(content);
-                // pw.flush();
-                // } catch (Exception e) {
-                // e.printStackTrace();
-                // }
                 sendContent("otherscore", socket);
             }
         });
@@ -160,15 +196,6 @@ public class PlayerClient {
         ReadThreadExecutor.submit(new Runnable() {
             @Override
             public void run() {
-                // TODO Auto-generated method stub
-                // try {
-                // BufferedReader br = new BufferedReader(new
-                // InputStreamReader(socket.getInputStream()));
-                // String content = br.readLine();
-                // opscore = content;
-                // } catch (Exception e) {
-                // e.printStackTrace();
-                // }
                 opscore = getContent(socket);
             }
         });
@@ -177,44 +204,38 @@ public class PlayerClient {
 
     public void sendOver() {
 
-        // try {
-        // PrintWriter pw = new PrintWriter(socket.getOutputStream());
-        // String content = "over";
-        // pw.println(content);
-        // pw.flush();
-        // } catch (Exception e) {
-        // e.printStackTrace();
-        // }
         sendContent("over", socket);
     }
 
     public void gameOver(int score) {
         setYourScore(score);
         sendContent(this.score, socket);
-        // try {
-        // PrintWriter pw = new PrintWriter(socket.getOutputStream());
-        // String content = this.score;
-        // pw.println(content);
-        // pw.flush();
-        // } catch (Exception e) {
-        // e.printStackTrace();
-        // }
         sendOver();
     }
 
     public void waitOppGameOver() {
+        // try {
+        // resetWriterAndReader();
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // }
         while (true) {
             try {
+
+                System.out.println("st wait");
                 String content = "wait";
-                sendContent(content, this.socket);
+                pw.println(content);
+                pw.flush();
+                System.out.println("send wait");
                 Thread.sleep(500);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             try {
-                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
                 String content = br.readLine();
+                System.out.println("get wait");
                 if (content.equals("over")) {
                     isAllOver = true;
                     break;
@@ -232,24 +253,6 @@ public class PlayerClient {
         String content = getContent(socket);
         opscore = content;
         return getOppScore();
-        // try {
-        // PrintWriter pw = new PrintWriter(socket.getOutputStream());
-        // String content = "otherscore";
-        // pw.println(content);
-        // pw.flush();
-        // } catch (Exception e) {
-        // e.printStackTrace();
-        // }
-
-        // try {
-        // BufferedReader br = new BufferedReader(new
-        // InputStreamReader(socket.getInputStream()));
-        // String content = br.readLine();
-        // opscore = content;
-        // } catch (Exception e) {
-        // e.printStackTrace();
-        // }
-        // return getOppScore();
 
     }
 
@@ -267,16 +270,18 @@ public class PlayerClient {
                 }
             }
         }).start();
-        ReadThreadExecutor.shutdown();
-        WriteThreadExecutor.shutdown();
+
+    }
+
+    public void discoonnect() {
+        sendContent("disconnect", socket);
     }
 
     public void sendContent(String content, Socket socket) {
         try {
-            PrintWriter pw = new PrintWriter(socket.getOutputStream());
             pw.println(content);
             pw.flush();
-        } catch (IOException e) {
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -285,12 +290,79 @@ public class PlayerClient {
     public String getContent(Socket socket) {
         String content = "";
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             content = br.readLine();
         } catch (Exception e) {
 
             e.printStackTrace();
         }
         return content;
+    }
+
+    // 登陆部分
+
+    public boolean register(String name, String account, String password) {
+        try {
+            pw.println("register");
+            pw.flush();
+            pw.println(name);
+            pw.flush();
+            pw.println(account);
+            pw.flush();
+            pw.println(password);
+            pw.flush();
+            String content = br.readLine();
+            if (content.equals("success")) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean login(String accout, String password) {
+        try {
+            pw.println("login");
+            pw.println(accout);
+            pw.println(password);
+            pw.flush();
+            String content = br.readLine();
+            if (content.equals("success")) {
+                try {
+                    playerName = br.readLine();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public List<RankListData> updDatas() {
+        try {
+            ranklist.clear();
+            pw.println("getdata");
+            pw.flush();
+            while (true) {
+                String content = br.readLine();
+                if (content.equals("listsendover")) {
+                    break;
+                }
+                String[] parts = content.split(",");
+                RankListData score = new RankListData(0, Integer.parseInt(parts[1]), parts[0],
+                        TimeUnit.stringToCalendar(parts[2]));
+                ranklist.add(score);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ranklist;
     }
 }

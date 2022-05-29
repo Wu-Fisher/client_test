@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
+
 public class ClientTest {
-    static String acc = "10.249.9.101";
+    static String acc = "10.249.8.149";
     static int port = 9999;
 
     public static void main(String[] args) throws UnknownHostException, IOException {
@@ -30,7 +32,7 @@ public class ClientTest {
             System.out.println("busy");
         } else {
             System.out.println("开始游戏");
-            for (int i = 0; i < 30; i++) {
+            for (int i = 0; i < 10; i++) {
                 try {
                     score += 100;
                     pc.setYourScore(score);
@@ -45,7 +47,9 @@ public class ClientTest {
             }
             // 以下方法回阻塞主线程
             try {
+                System.out.println("over");
                 pc.gameOver(score);
+                System.out.println("start wait");
                 pc.waitOppGameOver();
                 oppscore = pc.oopDataFinal();
                 pc.sendExit();
