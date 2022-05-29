@@ -166,7 +166,11 @@ public class Service extends Thread {
                     this.score = "0";
                     break;
                 default:
-                    sendMessage(this.socket, "busy");
+                    if (this.name != "p0") {
+                        sendMessage(socket, "p2");
+                    } else {
+                        sendMessage(this.socket, "busy");
+                    }
                     break;
             }
         }
