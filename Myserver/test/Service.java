@@ -99,6 +99,7 @@ public class Service extends Thread {
 
     // 进行联机游戏阶段
     public void netGame() throws IOException {
+        Arrays.fill(MyServer.isOVER, 0);
         checkPlayer();
         while ((content = reader.readLine()) != null) {
             if (content.equals("requestpk")) {
@@ -127,8 +128,7 @@ public class Service extends Thread {
                 }
             } else if (content.equals("exit")) {
                 System.out.println("本次游戏结束");
-                MyServer.map.clear();
-                Arrays.fill(MyServer.isOVER, 0);
+                MyServer.map.remove(this.name);
                 this.name = "p0";
                 this.score = "0";
                 break;
