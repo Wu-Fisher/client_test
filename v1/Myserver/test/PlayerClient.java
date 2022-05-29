@@ -206,7 +206,8 @@ public class PlayerClient {
             }
 
             try {
-                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                // BufferedReader br = new BufferedReader(new
+                // InputStreamReader(socket.getInputStream()));
                 String content = br.readLine();
                 if (content.equals("over")) {
                     isAllOver = true;
