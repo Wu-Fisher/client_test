@@ -225,7 +225,7 @@ public class PlayerClient {
                     break;
                 }
                 System.out.println("wait opp");
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -233,8 +233,11 @@ public class PlayerClient {
     }
 
     public int oopDataFinal() {
+        String content = "0";
         sendContent("otherscore", socket);
-        String content = getContent(socket);
+        do {
+            content = getContent(socket);
+        } while (!content.matches("[0-9]+"));
         opscore = content;
         return getOppScore();
 
@@ -250,10 +253,7 @@ public class PlayerClient {
         // String content = "exit";
         // sendContent(content, socket);
         // } catch (Exception e) {
-        // e.printStackTrace();
-        // }
-        // }
-        // }).start();
+        // e.printStac
         try {
             Thread.sleep(1000);
             String content = "exit";
