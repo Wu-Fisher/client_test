@@ -183,15 +183,19 @@ public class PlayerClient {
     public void waitOppGameOver() {
         while (true) {
             try {
+                System.out.println("st wait");
+                pw = new PrintWriter(socket.getOutputStream());
+                String content = "wait";
+                pw.println(content);
+                pw.flush();
                 System.out.println("send wait");
-                sendContent("wait", socket);
-
                 Thread.sleep(500);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             try {
+                br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String content = br.readLine();
                 System.out.println("get wait");
                 if (content.equals("over")) {
