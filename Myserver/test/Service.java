@@ -48,7 +48,7 @@ public class Service extends Thread {
                 content = reader.readLine();
                 System.out.println("从 " + this.name + "得到 " + content);
 
-                if (content.equals("discoonnect")) {
+                if (content.equals("disconnect")) {
                     System.out.println("Client disconnected");
                     MyServer.socketlist.remove(socket);
                     socket.shutdownInput();

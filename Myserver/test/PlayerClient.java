@@ -213,20 +213,47 @@ public class PlayerClient {
         sendOver();
     }
 
+    // public void waitOppGameOver() {
+    // while (true) {
+    // try {
+    // System.out.println("st wait");
+    // String content = "wait";
+    // sendContent(content, socket);
+    // String reply = getContent(socket);
+    // if (reply.equals("over")) {
+    // isAllOver = true;
+    // break;
+    // } else {
+    // System.out.println("wait opp");
+    // Thread.sleep(100);
+    // }
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // }
+    // }
+    // }
+
     public void waitOppGameOver() {
         while (true) {
             try {
-                System.out.println("st wait");
+                PrintWriter pw = new PrintWriter(socket.getOutputStream());
                 String content = "wait";
-                sendContent(content, socket);
-                String reply = getContent(socket);
-                if (reply.equals("over")) {
+                pw.println(content);
+                pw.flush();
+                Thread.sleep(500);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                String content = br.readLine();
+                if (content.equals("over")) {
                     isAllOver = true;
                     break;
-                } else {
-                    System.out.println("wait opp");
-                    Thread.sleep(100);
                 }
+                System.out.println("wait opp");
+                Thread.sleep(1000);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -245,16 +272,6 @@ public class PlayerClient {
     }
 
     public void sendExit() {
-        // new Thread(new Runnable() {
-        // @Override
-        // public void run() {
-        // // TODO Auto-generated method stub
-        // try {
-        // Thread.sleep(1000);
-        // String content = "exit";
-        // sendContent(content, socket);
-        // } catch (Exception e) {
-        // e.printStac
         try {
             Thread.sleep(1000);
             String content = "exit";
