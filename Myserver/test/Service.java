@@ -81,8 +81,10 @@ public class Service extends Thread {
 
     public void sendMessage(Socket socket, String context) {
         try {
+
             writer.println(context);
             writer.flush();
+            System.out.println("send message: " + context + "to" + this.name);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -141,9 +143,6 @@ public class Service extends Thread {
                     MyServer.map.clear();
                     MyServer.exitNum = 0;
                 }
-
-                this.name = "p0";
-                this.score = "0";
                 break;
             } else {
                 if (this.name == "p1") {
