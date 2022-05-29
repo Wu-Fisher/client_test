@@ -144,7 +144,7 @@ public class Service extends Thread {
                     MyServer.exitNum = 0;
                 }
                 break;
-            } else {
+            } else if (checkDigit(content)) {
                 if (this.name == "p1") {
                     MyServer.map.put("p1", content);
                 } else {
@@ -153,6 +153,14 @@ public class Service extends Thread {
             }
 
         }
+
+    }
+
+    public boolean checkDigit(String str)
+
+    {
+
+        return str.matches("[0-9]+");
 
     }
 

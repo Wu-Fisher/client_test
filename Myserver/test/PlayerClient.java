@@ -219,9 +219,7 @@ public class PlayerClient {
                 System.out.println("st wait");
                 String content = "wait";
                 sendContent(content, socket);
-                System.out.println("send wait");
                 String reply = getContent(socket);
-                System.out.println("get wait");
                 if (reply.equals("over")) {
                     isAllOver = true;
                     break;
@@ -243,19 +241,26 @@ public class PlayerClient {
     }
 
     public void sendExit() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                try {
-                    Thread.sleep(1000);
-                    String content = "exit";
-                    sendContent(content, socket);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+        // new Thread(new Runnable() {
+        // @Override
+        // public void run() {
+        // // TODO Auto-generated method stub
+        // try {
+        // Thread.sleep(1000);
+        // String content = "exit";
+        // sendContent(content, socket);
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // }
+        // }
+        // }).start();
+        try {
+            Thread.sleep(1000);
+            String content = "exit";
+            sendContent(content, socket);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
