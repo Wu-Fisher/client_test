@@ -44,7 +44,8 @@ public class Service extends Thread {
     @Override
     public void run() {
         try {
-            while ((content = reader.readLine()) != null) {
+            while (true) {
+                content = reader.readLine();
                 System.out.println("从 " + this.name + "得到 " + content);
 
                 if (content.equals("discoonnect")) {
@@ -139,12 +140,13 @@ public class Service extends Thread {
                 if (MyServer.exitNum == 0) {
                     System.out.println("有一名玩家退出");
                     MyServer.exitNum++;
+                    break;
                 } else {
                     System.out.println("有两名玩家退出");
                     MyServer.map.clear();
                     MyServer.exitNum = 0;
+                    break;
                 }
-                break;
             } else if (checkDigit(content)) {
                 if (this.name == "p1") {
                     MyServer.map.put("p1", content);
