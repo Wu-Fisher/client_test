@@ -214,7 +214,7 @@ public class PlayerClient {
     }
 
     public void waitOppGameOver() {
-        while (true) {
+        while (!isAllOver) {
             try {
                 System.out.println("st wait");
                 String content = "wait";
