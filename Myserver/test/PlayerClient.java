@@ -70,6 +70,39 @@ public class PlayerClient {
         return true;
     }
 
+    public void resetExecuter()
+
+    {
+        try {
+            if (ReadThreadExecutor != null)
+                ReadThreadExecutor.shutdownNow();
+            if (WriteThreadExecutor != null)
+                WriteThreadExecutor.shutdownNow();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        ReadThreadExecutor = Executors.newSingleThreadExecutor();
+        WriteThreadExecutor = Executors.newSingleThreadExecutor();
+    }
+
+    public void resetWriterAndReader() {
+        try {
+            if (br != null)
+                br.close();
+            if (pw != null)
+                pw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        try {
+            br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            pw = new PrintWriter(socket.getOutputStream());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     // 及时更新调用
 
     public void setYourScore(int score) {
@@ -181,10 +214,15 @@ public class PlayerClient {
     }
 
     public void waitOppGameOver() {
+        try {
+            resetWriterAndReader();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         while (true) {
             try {
+
                 System.out.println("st wait");
-                pw = new PrintWriter(socket.getOutputStream());
                 String content = "wait";
                 pw.println(content);
                 pw.flush();
@@ -195,7 +233,7 @@ public class PlayerClient {
             }
 
             try {
-                br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
                 String content = br.readLine();
                 System.out.println("get wait");
                 if (content.equals("over")) {
@@ -327,13 +365,4 @@ public class PlayerClient {
         }
         return ranklist;
     }
-
-    // public boolean addObject(RankListData data) {
-    // try {
-    // pw.println("adddate");
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-    // }
-
 }
