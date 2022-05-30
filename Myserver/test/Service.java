@@ -44,8 +44,8 @@ public class Service extends Thread {
     @Override
     public void run() {
         try {
-            while (true) {
-                content = reader.readLine();
+            while ((content=reader.readLine())!=null) {
+                
                 System.out.println("从 " + this.name + "得到 " + content);
 
                 if (content.equals("disconnect")) {
