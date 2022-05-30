@@ -84,10 +84,16 @@ public class Service extends Thread {
 
     public void sendMessage(Socket socket, String context) {
         try {
-            PrintWriter writer = new PrintWriter(socket.getOutputStream());
-            writer.println(context);
-            writer.flush();
-            System.out.println("send message: " + context + "to" + this.name);
+            if (!socket.equals(this.socket)) {
+                PrintWriter writer = new PrintWriter(socket.getOutputStream());
+                writer.println(context);
+                writer.flush();
+                System.out.println("send message: " + context + "to" + this.name);
+            } else {
+                this.writer.println(context);
+                this.writer.flush();
+                System.out.println("send message: " + context + "to" + this.name);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -95,8 +101,12 @@ public class Service extends Thread {
 
     public String recieveMessage(Socket socket) {
         try {
-            BufferedReader reader = new BufferedReader(new java.io.InputStreamReader(socket.getInputStream()));
-            return reader.readLine();
+            if (socket.equals(this.socket)) {
+                return this.reader.readLine();
+            } else {
+                BufferedReader reader = new BufferedReader(new java.io.InputStreamReader(socket.getInputStream()));
+                return reader.readLine();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -181,15 +191,13 @@ public class Service extends Thread {
 
                     if (this.name != "p1") {
                         this.name = "p2";
-                        for (Socket s : MyServer.socketlist) {
-                            sendMessage(s, "p2");
-                        }
+                        sendMessage(this.socket, "p2");
                         MyServer.map.put("p2", "0");
                     }
                     this.score = "0";
                     break;
                 default:
-                    if (this.name != "p0") {
+                    if (this.name == "p1" || this.name == "p2") {
                         sendMessage(socket, "p2");
                     } else {
                         sendMessage(this.socket, "busy");
@@ -237,7 +245,6 @@ public class Service extends Thread {
     public void register() {
         try {
             FileToUserList();
-            this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String name = reader.readLine();
             String account = reader.readLine();
             String password = reader.readLine();
@@ -258,7 +265,6 @@ public class Service extends Thread {
     public void login() {
         try {
             FileToUserList();
-            this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String account = reader.readLine();
             String password = reader.readLine();
             User user = getUser(account, password);

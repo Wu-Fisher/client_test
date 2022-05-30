@@ -262,7 +262,7 @@ public class PlayerClient {
 
     public void sendContent(String content, Socket socket) {
         try {
-            PrintWriter pw = new PrintWriter(socket.getOutputStream());
+            // PrintWriter pw = new PrintWriter(socket.getOutputStream());
             pw.println(content);
             pw.flush();
             System.out.println("send:" + content);
@@ -275,7 +275,8 @@ public class PlayerClient {
     public String getContent(Socket socket) {
         String content = "";
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            // BufferedReader br = new BufferedReader(new
+            // InputStreamReader(socket.getInputStream()));
             content = br.readLine();
             System.out.println("收到" + content);
         } catch (Exception e) {
