@@ -234,6 +234,13 @@ public class PlayerClient {
     // }
 
     public void waitOppGameOver() {
+        resetExecuter();
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
         while (true) {
             try {
                 PrintWriter pw = new PrintWriter(socket.getOutputStream());
@@ -251,9 +258,10 @@ public class PlayerClient {
                 if (content.equals("over")) {
                     isAllOver = true;
                     break;
+                } else if (content.equals("wait")) {
+                    System.out.println("wait opp");
+                    Thread.sleep(1000);
                 }
-                System.out.println("wait opp");
-                Thread.sleep(1000);
             } catch (Exception e) {
                 e.printStackTrace();
             }

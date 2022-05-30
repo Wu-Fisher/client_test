@@ -44,16 +44,17 @@ public class Service extends Thread {
     @Override
     public void run() {
         try {
-            while ((content=reader.readLine())!=null) {
-                
+            while ((content = reader.readLine()) != null) {
+
                 System.out.println("从 " + this.name + "得到 " + content);
 
                 if (content.equals("disconnect")) {
                     System.out.println("Client disconnected");
                     MyServer.socketlist.remove(socket);
-                    socket.shutdownInput();
-                    socket.shutdownOutput();
+                    // socket.shutdownInput();
+                    // socket.shutdownOutput();
                     socket.close();
+                    System.out.println("close over");
                 } else if (content.equals("requestpk")) {
                     netGame();
                 } else if (content.equals("register")) {
@@ -145,6 +146,7 @@ public class Service extends Thread {
                     System.out.println("有两名玩家退出");
                     MyServer.map.clear();
                     MyServer.exitNum = 0;
+                    Arrays.fill(MyServer.isOVER, 0);
                     break;
                 }
             } else if (checkDigit(content)) {
