@@ -47,7 +47,7 @@ public class ClientTest2 {
 
             try {
                 pc.gameOver(score);
-                pc.waitOppGameOver();
+                // pc.waitOppGameOver();
                 oppscore = pc.oopDataFinal();
                 pc.sendExit();
                 System.out.println("最终得分:" + score + "对手得分:" + oppscore);
