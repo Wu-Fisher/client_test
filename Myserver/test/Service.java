@@ -193,6 +193,8 @@ public class Service extends Thread {
                         this.name = "p2";
                         sendMessage(this.socket, "p2");
                         MyServer.map.put("p2", "0");
+                    } else {
+                        sendMessage(this.socket, "p1");
                     }
                     this.score = "0";
                     break;
