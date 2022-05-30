@@ -131,38 +131,6 @@ public class PlayerClient {
 
     public void callPK() {
 
-        // WriteThreadExecutor.submit(new Runnable() {
-        // @Override
-        // public void run() {
-
-        // sendContent("requestpk", socket);
-        // }
-        // });
-
-        // ReadThreadExecutor.submit(new Runnable() {
-        // @Override
-        // public void run() {
-        // try {
-        // String content = br.readLine();
-        // if (content.equals("p1")) {
-        // name = "p1";
-        // } else if (content.equals("p2")) {
-
-        // if (name.equals("p1")) {
-        // isReady = true;
-        // } else {
-        // name = "p2";
-        // isReady = true;
-        // }
-        // } else if (content.equals("busy")) {
-        // isBusy = true;
-        // }
-        // } catch (Exception e) {
-        // e.printStackTrace();
-        // }
-        // }
-        // });
-
         sendContent("requestpk", socket);
 
         try {
@@ -224,26 +192,6 @@ public class PlayerClient {
         sendContent(this.score, socket);
         sendOver();
     }
-
-    // public void waitOppGameOver() {
-    // while (true) {
-    // try {
-    // System.out.println("st wait");
-    // String content = "wait";
-    // sendContent(content, socket);
-    // String reply = getContent(socket);
-    // if (reply.equals("over")) {
-    // isAllOver = true;
-    // break;
-    // } else {
-    // System.out.println("wait opp");
-    // Thread.sleep(100);
-    // }
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-    // }
-    // }
 
     public void waitOppGameOver() {
         resetExecuter();
