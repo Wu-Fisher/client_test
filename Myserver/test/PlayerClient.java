@@ -87,15 +87,6 @@ public class PlayerClient {
     }
 
     public void resetWriterAndReader() {
-        // try {
-        // if (br != null)
-        // br.close();
-        // if (pw != null)
-        // pw.close();
-        // } catch (Exception e) {
-        // e.printStackTrace();
-
-        // }
         try {
             br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             pw = new PrintWriter(socket.getOutputStream());
@@ -254,13 +245,18 @@ public class PlayerClient {
 
             try {
                 BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                String content = br.readLine();
-                if (content.equals("over")) {
-                    isAllOver = true;
+                String content;
+                if ((content = br.readLine()) != null) {
+                    if (content.equals("over")) {
+                        isAllOver = true;
+                        break;
+                    } else {
+                        System.out.println("wait opp");
+                        Thread.sleep(100);
+                    }
+                } else {
+                    System.err.println("error");
                     break;
-                } else if (content.equals("wait")) {
-                    System.out.println("wait opp");
-                    Thread.sleep(1000);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
