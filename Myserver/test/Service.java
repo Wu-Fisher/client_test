@@ -84,7 +84,7 @@ public class Service extends Thread {
 
     public void sendMessage(Socket socket, String context) {
         try {
-            // PrintWriter writer = new PrintWriter(socket.getOutputStream());
+            PrintWriter writer = new PrintWriter(socket.getOutputStream());
             writer.println(context);
             writer.flush();
             System.out.println("send message: " + context + "to" + this.name);
@@ -95,8 +95,7 @@ public class Service extends Thread {
 
     public String recieveMessage(Socket socket) {
         try {
-            // BufferedReader reader = new BufferedReader(new
-            // java.io.InputStreamReader(socket.getInputStream()));
+            BufferedReader reader = new BufferedReader(new java.io.InputStreamReader(socket.getInputStream()));
             return reader.readLine();
         } catch (Exception e) {
             e.printStackTrace();
@@ -238,8 +237,7 @@ public class Service extends Thread {
     public void register() {
         try {
             FileToUserList();
-            // BufferedReader reader = new BufferedReader(new
-            // InputStreamReader(socket.getInputStream()));
+            this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String name = reader.readLine();
             String account = reader.readLine();
             String password = reader.readLine();
@@ -260,8 +258,7 @@ public class Service extends Thread {
     public void login() {
         try {
             FileToUserList();
-            // BufferedReader reader = new BufferedReader(new
-            // InputStreamReader(socket.getInputStream()));
+            this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String account = reader.readLine();
             String password = reader.readLine();
             User user = getUser(account, password);
