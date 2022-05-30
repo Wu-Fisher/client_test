@@ -266,8 +266,9 @@ public class PlayerClient {
 
     public int oopDataFinal() {
         String content = "0";
-        sendContent("otherscore", socket);
+
         do {
+            sendContent("otherscore", socket);
             content = getContent(socket);
         } while (!content.matches("[0-9]+"));
         opscore = content;

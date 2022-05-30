@@ -51,8 +51,8 @@ public class Service extends Thread {
                 if (content.equals("disconnect")) {
                     System.out.println("Client disconnected");
                     MyServer.socketlist.remove(socket);
-                    // socket.shutdownInput();
-                    // socket.shutdownOutput();
+                    socket.shutdownInput();
+                    socket.shutdownOutput();
                     socket.close();
                     System.out.println("close over");
                 } else if (content.equals("requestpk")) {

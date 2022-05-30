@@ -50,7 +50,7 @@ public class ClientTest {
                 System.out.println("over");
                 pc.gameOver(score);
                 System.out.println("start wait");
-                // pc.waitOppGameOver();
+                pc.waitOppGameOver();
                 oppscore = pc.oopDataFinal();
                 pc.sendExit();
                 System.out.println("最终得分:" + score + "对手得分:" + oppscore);
