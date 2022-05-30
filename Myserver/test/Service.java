@@ -238,7 +238,8 @@ public class Service extends Thread {
     public void register() {
         try {
             FileToUserList();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            // BufferedReader reader = new BufferedReader(new
+            // InputStreamReader(socket.getInputStream()));
             String name = reader.readLine();
             String account = reader.readLine();
             String password = reader.readLine();
@@ -259,7 +260,8 @@ public class Service extends Thread {
     public void login() {
         try {
             FileToUserList();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            // BufferedReader reader = new BufferedReader(new
+            // InputStreamReader(socket.getInputStream()));
             String account = reader.readLine();
             String password = reader.readLine();
             User user = getUser(account, password);
