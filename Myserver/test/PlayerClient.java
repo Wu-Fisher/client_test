@@ -131,37 +131,58 @@ public class PlayerClient {
 
     public void callPK() {
 
-        WriteThreadExecutor.submit(new Runnable() {
-            @Override
-            public void run() {
+        // WriteThreadExecutor.submit(new Runnable() {
+        // @Override
+        // public void run() {
 
-                sendContent("requestpk", socket);
-            }
-        });
+        // sendContent("requestpk", socket);
+        // }
+        // });
 
-        ReadThreadExecutor.submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String content = br.readLine();
-                    if (content.equals("p1")) {
-                        name = "p1";
-                    } else if (content.equals("p2")) {
+        // ReadThreadExecutor.submit(new Runnable() {
+        // @Override
+        // public void run() {
+        // try {
+        // String content = br.readLine();
+        // if (content.equals("p1")) {
+        // name = "p1";
+        // } else if (content.equals("p2")) {
 
-                        if (name.equals("p1")) {
-                            isReady = true;
-                        } else {
-                            name = "p2";
-                            isReady = true;
-                        }
-                    } else if (content.equals("busy")) {
-                        isBusy = true;
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+        // if (name.equals("p1")) {
+        // isReady = true;
+        // } else {
+        // name = "p2";
+        // isReady = true;
+        // }
+        // } else if (content.equals("busy")) {
+        // isBusy = true;
+        // }
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // }
+        // }
+        // });
+
+        sendContent("requestpk", socket);
+
+        try {
+            String content = br.readLine();
+            if (content.equals("p1")) {
+                name = "p1";
+            } else if (content.equals("p2")) {
+
+                if (name.equals("p1")) {
+                    isReady = true;
+                } else {
+                    name = "p2";
+                    isReady = true;
                 }
+            } else if (content.equals("busy")) {
+                isBusy = true;
             }
-        });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
