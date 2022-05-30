@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -83,7 +84,7 @@ public class Service extends Thread {
 
     public void sendMessage(Socket socket, String context) {
         try {
-
+            // PrintWriter writer = new PrintWriter(socket.getOutputStream());
             writer.println(context);
             writer.flush();
             System.out.println("send message: " + context + "to" + this.name);
@@ -94,6 +95,8 @@ public class Service extends Thread {
 
     public String recieveMessage(Socket socket) {
         try {
+            // BufferedReader reader = new BufferedReader(new
+            // java.io.InputStreamReader(socket.getInputStream()));
             return reader.readLine();
         } catch (Exception e) {
             e.printStackTrace();
@@ -132,19 +135,15 @@ public class Service extends Thread {
 
                 }
             } else if (content.equals("exit")) {
-                // try {
-                // Thread.sleep(3000);
-                // } catch (InterruptedException e) {
-                // // TODO Auto-generated catch block
-                // e.printStackTrace();
-                // }
                 if (MyServer.exitNum == 0) {
                     System.out.println("有一名玩家退出");
+                    this.name = "p0";
                     MyServer.exitNum++;
                     break;
                 } else {
                     System.out.println("有两名玩家退出");
                     MyServer.map.clear();
+                    this.name = "p0";
                     MyServer.exitNum = 0;
                     Arrays.fill(MyServer.isOVER, 0);
                     break;
@@ -239,7 +238,7 @@ public class Service extends Thread {
     public void register() {
         try {
             FileToUserList();
-
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String name = reader.readLine();
             String account = reader.readLine();
             String password = reader.readLine();
@@ -260,6 +259,7 @@ public class Service extends Thread {
     public void login() {
         try {
             FileToUserList();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String account = reader.readLine();
             String password = reader.readLine();
             User user = getUser(account, password);
