@@ -24,6 +24,7 @@ public class PlayerClient {
     public boolean isWaiting = false;
     public boolean isAllOver = false;
 
+
     public static Object lock = new Object();
 
     public void resetButNotExit() {
@@ -38,6 +39,13 @@ public class PlayerClient {
         name = "p0";
         score = "0";
         opscore = "0";
+    }
+    public void beginWait() {
+        isWaiting = true;
+    }
+    public boolean getWait()
+    {
+        return isWaiting;
     }
 
     public String playerName = "testplayer";
