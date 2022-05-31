@@ -321,36 +321,36 @@ public class Service extends Thread {
     }
 
     public void FileToScoreList() {
-        synchronized (MyServer.lock) {
-            try {
-                ranklist.clear();
-                FileReader fr = new FileReader(SCORE_PATH);
-                BufferedReader br = new BufferedReader(fr);
-                String str = null;
-                while ((str = br.readLine()) != null) {
-                    String[] parts = str.split(",");
-                    RankListData score = new RankListData(0, Integer.parseInt(parts[1]), parts[0],
-                            TimeUnit.stringToCalendar(parts[2]));
-                    ranklist.add(score);
-                }
-                br.close();
-            } catch (Exception e) {
+        try {
+            ranklist.clear();
+            FileReader fr = new FileReader(SCORE_PATH);
+            BufferedReader br = new BufferedReader(fr);
+            String str = null;
+            while ((str = br.readLine()) != null) {
+                String[] parts = str.split(",");
+                RankListData score = new RankListData(0, Integer.parseInt(parts[1]), parts[0],
+                        TimeUnit.stringToCalendar(parts[2]));
+                ranklist.add(score);
             }
+            br.close();
+        } catch (Exception e) {
         }
 
     }
 
     public void getScoreList() {
-        try {
-            FileToScoreList();
-            for (RankListData score : ranklist) {
-                String content = score.getName() + "," + score.getScore() + ","
-                        + TimeUnit.calenderToString(score.getDate());
-                sendMessage(this.socket, content);
+        synchronized (MyServer.lock) {
+            try {
+                FileToScoreList();
+                for (RankListData score : ranklist) {
+                    String content = score.getName() + "," + score.getScore() + ","
+                            + TimeUnit.calenderToString(score.getDate());
+                    sendMessage(this.socket, content);
+                }
+                sendMessage(this.socket, "listsendover");
+            } catch (Exception e) {
+                sendMessage(this.socket, "listsendover");
             }
-            sendMessage(this.socket, "listsendover");
-        } catch (Exception e) {
-
         }
     }
 

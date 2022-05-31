@@ -9,8 +9,18 @@ public class ClientTestLR {
         System.out.println("测试注册：");
         boolean a = pc.register("player1", "1234", "5678");
         boolean b = pc.register("player2", "3456", "5678");
-        if (a && b) {
+        if (a) {
+
             System.err.println("注册成功");
+        } else {
+            System.out.println("a already exist");
+            System.err.println("注册失败");
+        }
+        if (b) {
+            System.err.println("注册成功");
+        } else {
+            System.out.println("b already exist");
+            System.err.println("注册失败");
         }
         System.out.println("测试重复注册");
         a = pc.register("player1", "1234", "5678");
