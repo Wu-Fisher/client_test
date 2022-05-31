@@ -85,6 +85,7 @@ public class PlayerClient {
             e.printStackTrace();
             return false;
         }
+        isConnected = true;
         return true;
     }
 
