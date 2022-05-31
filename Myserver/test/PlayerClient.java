@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -250,6 +249,7 @@ public class PlayerClient {
             Thread.sleep(1000);
             String content = "exit";
             sendContent(content, socket);
+            resetButNotExit();
         } catch (Exception e) {
             e.printStackTrace();
         }
