@@ -52,7 +52,24 @@ public class PlayerClient {
     PrintWriter pw;;
 
     public PlayerClient(String acc, int port) {
-        isConnected = Connect(acc, port);
+        realyConnect(acc, port);
+    }
+
+    public void realyConnect(String acc,int port){
+        new Thread(){
+            public void run(){
+                isConnected = Connect(acc, port);     
+            }
+        }.start();
+        try{
+            int i =0 ;
+            while(i<10 && !isConnected){
+                Thread.sleep(100);
+                i++;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     public boolean Connect(String acc, int port) {
@@ -66,7 +83,6 @@ public class PlayerClient {
         } catch (Exception e) {
 
             e.printStackTrace();
-            isConnected = false;
             return false;
         }
         return true;
