@@ -69,6 +69,7 @@ public class PlayerClient {
             isConnected = false;
             return false;
         }
+        isConnected = true;
         return true;
     }
 
