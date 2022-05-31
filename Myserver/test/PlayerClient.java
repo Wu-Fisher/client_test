@@ -24,6 +24,8 @@ public class PlayerClient {
     public boolean isWaiting = false;
     public boolean isAllOver = false;
 
+    public static Object lock = new Object();
+
     public void resetButNotExit() {
         isPlaying = false;
         isReady = false;
@@ -55,19 +57,19 @@ public class PlayerClient {
         realyConnect(acc, port);
     }
 
-    public void realyConnect(String acc,int port){
-        new Thread(){
-            public void run(){
-                isConnected = Connect(acc, port);     
+    public void realyConnect(String acc, int port) {
+        new Thread() {
+            public void run() {
+                isConnected = Connect(acc, port);
             }
         }.start();
-        try{
-            int i =0 ;
-            while(i<10 && !isConnected){
+        try {
+            int i = 0;
+            while (i < 10 && !isConnected) {
                 Thread.sleep(100);
                 i++;
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -149,28 +151,28 @@ public class PlayerClient {
     }
 
     public void callPK() {
-        resetNetData();
-        sendContent("requestpk", socket);
+        synchronized (PlayerClient.lock) {
+            resetNetData();
+            sendContent("requestpk", socket);
+            try {
+                String content = br.readLine();
+                if (content.equals("p1")) {
+                    name = "p1";
+                } else if (content.equals("p2")) {
 
-        try {
-            String content = br.readLine();
-            if (content.equals("p1")) {
-                name = "p1";
-            } else if (content.equals("p2")) {
-
-                if (name.equals("p1")) {
-                    isReady = true;
-                } else {
-                    name = "p2";
-                    isReady = true;
+                    if (name.equals("p1")) {
+                        isReady = true;
+                    } else {
+                        name = "p2";
+                        isReady = true;
+                    }
+                } else if (content.equals("busy")) {
+                    isBusy = true;
                 }
-            } else if (content.equals("busy")) {
-                isBusy = true;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
     }
 
     public void sendYourScore() {
@@ -265,15 +267,16 @@ public class PlayerClient {
     }
 
     public void sendExit() {
-        try {
-            Thread.sleep(1000);
-            String content = "exit";
-            sendContent(content, socket);
-            resetButNotExit();
-        } catch (Exception e) {
-            e.printStackTrace();
+        synchronized (PlayerClient.lock) {
+            try {
+                Thread.sleep(500);
+                String content = "exit";
+                sendContent(content, socket);
+                resetButNotExit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
     }
 
     public void discoonnect() {

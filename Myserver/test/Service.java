@@ -144,13 +144,12 @@ public class Service extends Thread {
 
                 }
             } else if (content.equals("exit")) {
-                if(MyServer.exitNum==0 && MyServer.socketlist.size()==1)
-                {
-                    writer.flush();
+                if (MyServer.exitNum == 0 && MyServer.map.size() == 1) {
+                    this.name = "p0";
+                    MyServer.map.clear();
                     System.out.println("back终端退出");
                     break;
-                }
-                else if (MyServer.exitNum == 0) {
+                } else if (MyServer.exitNum == 0) {
                     System.out.println("有一名玩家退出");
                     this.name = "p0";
                     MyServer.exitNum++;
