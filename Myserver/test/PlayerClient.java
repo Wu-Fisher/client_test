@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -348,6 +350,12 @@ public class PlayerClient {
                         TimeUnit.stringToCalendar(parts[2]));
                 ranklist.add(score);
             }
+            Collections.sort(ranklist, new Comparator<RankListData>() {
+                @Override
+                public int compare(RankListData o1, RankListData o2) {
+                    return o2.getScore() - o1.getScore();
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
