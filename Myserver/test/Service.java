@@ -259,7 +259,7 @@ public class Service extends Thread {
                 sendMessage(this.socket, "failure");
             }
         } catch (Exception e) {
-
+            sendMessage(socket, "failure");
         }
 
     }
@@ -278,7 +278,7 @@ public class Service extends Thread {
             }
 
         } catch (Exception e) {
-
+            sendMessage(socket, "failure");
         }
     }
 
