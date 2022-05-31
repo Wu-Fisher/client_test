@@ -37,6 +37,7 @@ public class ClientTestLR {
         } else {
             System.out.println("登陆失败");
         }
+        pc.discoonnect();
 
     }
 }

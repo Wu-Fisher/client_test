@@ -32,6 +32,7 @@ public class ClientFileTest {
         list = pc.updDatas();
         printList(list);
         System.out.println("测试删除数据完成");
+        pc.discoonnect();
 
     }
 
