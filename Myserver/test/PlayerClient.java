@@ -30,11 +30,12 @@ public class PlayerClient {
         isBusy = false;
         isWaiting = false;
         isAllOver = false;
+    }
 
+    public void resetNetData() {
         name = "p0";
         score = "0";
         opscore = "0";
-
     }
 
     public String playerName = "testplayer";
@@ -131,7 +132,7 @@ public class PlayerClient {
     }
 
     public void callPK() {
-
+        resetNetData();
         sendContent("requestpk", socket);
 
         try {
