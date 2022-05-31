@@ -366,7 +366,7 @@ public class Service extends Thread {
                 ScoreListToFile();
                 sendMessage(this.socket, "success");
             } catch (Exception e) {
-
+                sendMessage(socket, "fail");
             }
         }
     }
@@ -390,7 +390,7 @@ public class Service extends Thread {
                 ScoreListToFile();
                 sendMessage(this.socket, "success");
             } catch (Exception e) {
-
+                sendMessage(socket, "fail");
             }
         }
     }

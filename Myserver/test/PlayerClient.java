@@ -353,4 +353,41 @@ public class PlayerClient {
         }
         return ranklist;
     }
+
+    public boolean doAddDate(RankListData r) {
+        try {
+            sendContent("adddata", socket);
+            String str = r.getName() + "," + r.getScore() + "," + TimeUnit.calenderToString(r.getDate());
+            sendContent(str, socket);
+
+            String reply = getContent(socket);
+            if (reply.equals("success")) {
+                System.out.println("添加成功");
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean doDeleteDate(RankListData r) {
+        try {
+            sendContent("deletedata", socket);
+            String str = r.getName() + "," + r.getScore() + "," + TimeUnit.calenderToString(r.getDate());
+            sendContent(str, socket);
+            String reply = getContent(socket);
+            if (reply.equals("success")) {
+                System.out.println("delete success");
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
