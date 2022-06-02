@@ -52,6 +52,7 @@ public class Service extends Thread {
                     sendFile(this.send_file_path);
                 } else if (content.equals("Mstart")) {
                     MgetMessage();
+                    break;
                 }
             }
         } catch (IOException e) {
@@ -167,7 +168,7 @@ public class Service extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            socket.close();
+            // socket.close();
         }
     }
 }
