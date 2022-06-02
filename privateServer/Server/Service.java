@@ -76,7 +76,8 @@ public class Service extends Thread {
     }
 
     public void sendMessage(Socket socket, String context) {
-        try (PrintWriter writer = new PrintWriter(socket.getOutputStream());) {
+        try {
+            PrintWriter writer = new PrintWriter(socket.getOutputStream());
             writer.println(context);
             writer.flush();
         } catch (Exception e) {

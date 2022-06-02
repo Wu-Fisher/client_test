@@ -136,7 +136,7 @@ public class PriClient {
                     fos.close();
                 if (dis != null)
                     dis.close();
-                socket.close();
+                // socket.close();
             } catch (Exception e) {
             }
         }
