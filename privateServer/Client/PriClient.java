@@ -4,12 +4,15 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.RoundingMode;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PriClient {
     Socket socket;
@@ -23,9 +26,7 @@ public class PriClient {
         this.socket = new Socket(acc, port);
     }
 
-
-    public void sendMessage(String str)
-    {
+    public void sendMessage(String str) {
         try {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             out.println("Mstart");
@@ -47,28 +48,11 @@ public class PriClient {
 
     }
 
-    // public void sendMessageSperate(String str)
-    // {
-    //     try {
-    //         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-    //         out.println("SPstart");
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-    //     try {
-    //         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-    //         out.println(str);
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-    //     try {
-    //         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-    //         out.println("SPend");
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-
-    // }
+    public void sendMessageFromFile(String path) {
+        List<String> cc;
+        cc = readToList(path);
+        sendMessage(listToContent(cc));
+    }
 
     public void sendRun() {
         try {
@@ -128,8 +112,7 @@ public class PriClient {
             // 文件名和长度
             String fileName = dis.readUTF();
             long fileLength = dis.readLong();
-            File directory = new File(recieve_path
-            );
+            File directory = new File(recieve_path);
             if (!directory.exists()) {
                 directory.mkdir();
             }
@@ -183,6 +166,36 @@ public class PriClient {
             return df.format(size) + "KB";
         }
         return length + "B";
+    }
+
+    public List<String> readToList(String path) {
+        List<String> list = new ArrayList<>();
+        try {
+            // "privateServer/Client/sample.html"
+
+            FileReader fr = new FileReader(path);
+            BufferedReader br = new BufferedReader(fr);
+            String line = "";
+            while ((line = br.readLine()) != null) {
+                list.add(line);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public String listToContent(List<String> list) {
+        String context = "";
+        try {
+
+            for (String s : list) {
+                context += s + "\n";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return context;
     }
 
 }

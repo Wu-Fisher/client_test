@@ -74,20 +74,6 @@ public class Service extends Thread {
             lines.add(content2);
         }
     }
-    // public void SPgetMessage() throws IOException
-    // {
-    // System.out.println("SPstart");
-    // inlines = new ArrayList<String>();
-    // while((content2 = reader.readLine())!=null){
-    // if(content2.equals("SPend")){
-    // System.out.println("SPend");
-    // writeToFile(this.in_txt_path,true);
-    // break;
-    // }
-    // System.out.println(content2);
-    // inlines.add(content2);
-    // }
-    // }
 
     public void sendMessage(Socket socket, String context) {
         PrintWriter writer = null;
@@ -100,17 +86,18 @@ public class Service extends Thread {
         }
     }
 
-    public String getContent(Socket socket) {
-        String content = "";
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            content = br.readLine();
-        } catch (Exception e) {
+    // public String getContent(Socket socket) {
+    // String content = "";
+    // try {
+    // BufferedReader br = new BufferedReader(new
+    // InputStreamReader(socket.getInputStream()));
+    // content = br.readLine();
+    // } catch (Exception e) {
 
-            e.printStackTrace();
-        }
-        return content;
-    }
+    // e.printStackTrace();
+    // }
+    // return content;
+    // }
 
     public void runPython() {
         System.out.println("java test");
