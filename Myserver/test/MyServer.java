@@ -17,7 +17,7 @@ public class MyServer {
     public static int[] isOVER = new int[2];
     public static Object lock = new Object();
     public static int exitNum = 0;
-    public int port = 9999;
+    public int port = 9980;
 
     public MyServer(int port) {
         this.port = port;
