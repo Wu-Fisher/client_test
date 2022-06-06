@@ -1,0 +1,50 @@
+Class,Privacy information,Collecting action,Collector,Condition
+UNDEFINED,our,['collect'],First party,
+UNDEFINED,service,['collect'],First party,
+UNDEFINED,including,['collect'],First party,
+UNDEFINED,the,['collect'],First party,
+UNDEFINED,following,['collect'],First party,
+UNDEFINED,:,['collect'],First party,
+UNDEFINED,additional information,['collect'],First party,
+UNDEFINED,list,['collect'],First party,
+HARDWARE,hardware,['collect'],First party,
+UNDEFINED,model,['collect'],First party,
+UNDEFINED,operating,['collect'],First party,
+UNDEFINED,system,['collect'],First party,
+UNDEFINED,version,['collect'],First party,
+UNDEFINED,unique,['collect'],First party,
+UNDEFINED,device,['collect'],First party,
+UNDEFINED,identifiers,['collect'],First party,
+UNDEFINED,MAC,['collect'],First party,
+LOCATION,address,['collect'],First party,
+UNDEFINED,IMEI,['collect'],First party,
+UNDEFINED,browser,['collect'],First party,
+UNDEFINED,type,['collect'],First party,
+UNDEFINED,language,['collect'],First party,
+UNDEFINED,mobile,['collect'],First party,
+UNDEFINED,phone,['collect'],First party,
+USER_HISTORY,number,['collect'],First party,
+NETWORK,network,['collect'],First party,
+UNDEFINED,connection,['collect'],First party,
+STORAGE,information,['collect'],First party,to add your friends in a convenient and intuitive way . Your consent can be revoked by changing your contacts permissions in settings . 
+CAMERA,camera,['access'],First party,"to enable photo/video taking and editing functionalities . With your consent , we access your device 's camera and photos . "
+STORAGE,gallery,['access'],First party,"to enable photo/video taking and editing functionalities . With your consent , we access your device 's camera and photos . "
+UNDEFINED,photos,['access'],First party,"to enable photo/video taking and editing functionalities . With your consent , we access your device 's camera and photos . "
+LOCATION,location information,['collect'],First party,
+UNDEFINED,GPS,['collect'],First party,
+UNDEFINED,wireless,['collect'],First party,
+WIFI,wifi,['collect'],First party,
+UNDEFINED,etc,['collect'],First party,
+UNDEFINED,web beacons,['use'],First party,"by changing your settings , but this may partially limit our services . "
+UNDEFINED,Web beacons,['use'],First party,"by changing your settings , but this may partially limit our services . "
+UNDEFINED,browser cookies,['use'],First party,"by changing your settings , but this may partially limit our services . "
+UNDEFINED,technologies,['use'],First party,"by changing your settings , but this may partially limit our services . "
+UNDEFINED,information way,['collect'],First party,
+STORAGE,information,['collect'],First party,
+UNDEFINED,analysis,['use'],First party,
+UNDEFINED,of,['use'],First party,
+UNDEFINED,statistics,['use'],First party,
+UNDEFINED,solve,['use'],First party,
+UNDEFINED,problems,['use'],First party,
+UNDEFINED,through,['use'],First party,
+UNDEFINED,troubleshooting,['use'],First party,

@@ -32,7 +32,7 @@ public class Main {
     public void readToList() {
         try {
             list = new ArrayList<>();
-            FileReader fr = new FileReader("privateServer/Client/sample.html");
+            FileReader fr = new FileReader("privateServer/Client/sample2.html");
             BufferedReader br = new BufferedReader(fr);
             String line = "";
             while ((line = br.readLine()) != null) {
