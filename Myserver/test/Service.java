@@ -189,7 +189,6 @@ public class Service extends Thread {
                 case 0:
                     this.name = "p1";
                     sendMessage(this.socket, "p1");
-
                     this.score = "0";
                     MyServer.map.put("p1", "0");
                     break;
