@@ -187,8 +187,9 @@ public class Service extends Thread {
             System.out.println("当前有" + MyServer.map.size() + "个玩家");
             switch (MyServer.map.size()) {
                 case 0:
-                    sendMessage(this.socket, "p1");
                     this.name = "p1";
+                    sendMessage(this.socket, "p1");
+
                     this.score = "0";
                     MyServer.map.put("p1", "0");
                     break;
