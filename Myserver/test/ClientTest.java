@@ -8,7 +8,7 @@ import javax.swing.plaf.synth.SynthOptionPaneUI;
 
 public class ClientTest {
     static String acc = "10.249.8.149";
-    static int port = 9999;
+    static int port = 9980;
 
     public static void main(String[] args) throws UnknownHostException, IOException {
         PlayerClient pc = new PlayerClient(acc, port);
